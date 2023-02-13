@@ -17,21 +17,21 @@ export default function Register() {
           </div>
           <div className="form-control w-full max-w-xs">
             <label className="label">
-              <span className="label-text">Enter a password</span>
-            </label>
-            <input
-              type="password"
-              placeholder="e.g. ********"
-              className="input-bordered input w-full max-w-xs"
-            />
-          </div>
-          <div className="form-control w-full max-w-xs">
-            <label className="label">
               <span className="label-text">Enter your email address</span>
             </label>
             <input
               type="text"
               placeholder="e.g. sharmaamit@elite.club"
+              className="input-bordered input w-full max-w-xs"
+            />
+          </div>
+          <div className="form-control w-full max-w-xs">
+            <label className="label">
+              <span className="label-text">Enter a password</span>
+            </label>
+            <input
+              type="password"
+              placeholder="e.g. ********"
               className="input-bordered input w-full max-w-xs"
             />
           </div>
@@ -44,11 +44,11 @@ export default function Register() {
               className="file-input-bordered file-input-accent file-input w-full max-w-xs"
             />
           </div>
-          <button className="btn-primary btn-wide btn">Sign up</button>
+          <button className="btn-primary btn-wide btn mt-2">Sign up</button>
         </form>
         <p className="mt-4 text-center">
           Already have an account?{" "}
-          <a href="#" className="link-secondary  link font-semibold">
+          <a href="#" className="link-secondary link font-semibold">
             Login
           </a>
         </p>

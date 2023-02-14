@@ -1,7 +1,7 @@
 export default function Navbar() {
   return (
     <div className="flex h-16 select-none items-center justify-between bg-secondary px-4">
-      <span className="text-xl font-bold">Fire Chat</span>
+      <span className="text-xl font-semibold">Fire Chat</span>
       <div className="flex items-center justify-center gap-2">
         <div>
           <div className="placeholder avatar">

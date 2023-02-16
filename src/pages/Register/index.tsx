@@ -1,12 +1,16 @@
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
-import { auth, storage } from "../../firebase";
+import { auth, db, storage } from "../../firebase";
 
 export default function Register() {
   const [error, setError] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   async function handleSubmit(e: any) {
+    setLoading(true);
+    setError(false);
     e.preventDefault();
     const displayName: string = e.target[0].value;
     const email: string = e.target[1].value;
@@ -15,23 +19,31 @@ export default function Register() {
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
 
-      const storageRef = ref(storage, displayName);
-      const uploadTask = uploadBytesResumable(storageRef, avatar);
-      uploadTask.on(
-        "state_changed",
-        (error: any) => setError(true),
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then(
-            async (downloadURL: string) => {
-              await updateProfile(res.user, {
-                displayName,
-                photoURL: downloadURL,
-              });
-            }
-          );
-        }
-      );
+      const date = new Date().getTime();
+      const storageRef = ref(storage, `${displayName + date}`);
+      await uploadBytesResumable(storageRef, avatar).then(() => {
+        getDownloadURL(storageRef).then(async (downloadURL) => {
+          try {
+            await updateProfile(res.user, {
+              displayName,
+              photoURL: downloadURL,
+            });
+            await setDoc(doc(db, "users", res.user.uid), {
+              uid: res.user.uid,
+              displayName,
+              email,
+              photoURL: downloadURL,
+            });
+            setLoading(false);
+          } catch (error) {
+            setLoading(false);
+            setError(true);
+            console.log(error);
+          }
+        });
+      });
     } catch (error) {
+      setLoading(false);
       setError(true);
       console.log(error);
     }
@@ -85,7 +97,14 @@ export default function Register() {
               className="file-input-bordered file-input-accent file-input w-full max-w-xs"
             />
           </div>
-          <button className="btn-primary btn-wide btn mt-2">Sign up</button>
+          <button className="btn-primary btn-wide btn mt-2" disabled={loading}>
+            Sign up
+          </button>
+          {loading && (
+            <div className="text-info">
+              Creating your Firechat account&#8230;
+            </div>
+          )}
           {error && <div className="text-error">Something went wrong.</div>}
         </form>
         <p className="mt-4 text-center">

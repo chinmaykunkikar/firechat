@@ -3,11 +3,12 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
 import { auth, db, storage } from "../../firebase";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Register() {
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   async function handleSubmit(e: any) {
     setLoading(true);
@@ -37,6 +38,7 @@ export default function Register() {
             });
             await setDoc(doc(db, "userChats", res.user.uid), {});
             setLoading(false);
+            navigate("/login");
           } catch (error) {
             setLoading(false);
             setError(true);

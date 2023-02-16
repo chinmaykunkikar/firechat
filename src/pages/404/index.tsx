@@ -1,4 +1,5 @@
 import { HomeIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 
 export default function PageNotFound() {
   return (
@@ -7,9 +8,9 @@ export default function PageNotFound() {
       <p className="text-2xl text-base-100">
         Seems like you've lost your way on this adventure.
       </p>
-      <button className="btn-ghost btn-square btn mt-8">
+      <Link to="/" className="btn-ghost btn-square btn mt-8">
         <HomeIcon className="stroke-base-100 p-1" />
-      </button>
+      </Link>
       <p className="text-base-100">
         Let's teleport you back to home for safety.
       </p>

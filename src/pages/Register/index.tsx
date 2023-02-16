@@ -3,6 +3,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
 import { auth, db, storage } from "../../firebase";
+import { Link } from "react-router-dom";
 
 export default function Register() {
   const [error, setError] = useState<boolean>(false);
@@ -110,9 +111,9 @@ export default function Register() {
         </form>
         <p className="mt-4 text-center">
           Already have an account?{" "}
-          <a href="#" className="link-secondary link font-semibold">
+          <Link to="/login" className="link-secondary link font-semibold">
             Login
-          </a>
+          </Link>
         </p>
       </div>
     </div>

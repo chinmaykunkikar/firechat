@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function Login() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-8">
@@ -29,9 +31,9 @@ export default function Login() {
         </form>
         <p className="mt-4 text-center">
           Don't have an account?{" "}
-          <a href="#" className="link-secondary  link font-semibold">
+          <Link to="/register" className="link-secondary link font-semibold">
             Register
-          </a>
+          </Link>
         </p>
       </div>
     </div>

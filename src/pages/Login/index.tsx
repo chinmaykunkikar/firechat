@@ -14,6 +14,7 @@ export default function Login() {
             <input
               type="text"
               placeholder="e.g. sharmaamit@elite.club"
+              autoComplete="email"
               className="input-bordered input w-full max-w-xs"
             />
           </div>
@@ -24,6 +25,7 @@ export default function Login() {
             <input
               type="password"
               placeholder="e.g. ********"
+              autoComplete="current-password"
               className="input-bordered input w-full max-w-xs"
             />
           </div>

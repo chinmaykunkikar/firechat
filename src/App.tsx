@@ -9,13 +9,13 @@ import { AuthContext } from "@contexts/AuthContext";
 export default function App() {
   const { currentUser }: any = useContext(AuthContext);
 
-  const ProtectedRoute = ({ children }: any) => {
+  function ProtectedRoute({ children }: any) {
     if (!currentUser) {
       return <Navigate to="/login" />;
     }
-
     return children;
-  };
+  }
+
   return (
     <Routes>
       <Route

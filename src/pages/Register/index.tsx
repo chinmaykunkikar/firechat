@@ -2,7 +2,7 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
-import { auth, db, storage } from "../../firebase";
+import { auth, db, storage } from "@/firebase";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Register() {

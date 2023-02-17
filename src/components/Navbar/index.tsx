@@ -1,6 +1,6 @@
 import { AuthContext } from "@contexts/AuthContext";
 import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
-import { auth } from "../../firebase";
+import { auth } from "@/firebase";
 import { signOut } from "firebase/auth";
 import { useContext } from "react";
 

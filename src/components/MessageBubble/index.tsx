@@ -1,31 +1,63 @@
-export default function MessageBubble() {
+import { AuthContext } from "@/contexts/AuthContext";
+import { ChatContext } from "@/contexts/ChatContext";
+import { useContext, useEffect, useRef } from "react";
+
+export default function MessageBubble({ message }: any) {
+  const { currentUser }: any = useContext(AuthContext);
+  const { data }: any = useContext(ChatContext);
+
+  const ref = useRef<null | HTMLDivElement>(null);
+
+  useEffect(() => {
+    ref.current?.scrollIntoView({ behavior: "smooth" });
+  }, [message]);
+
+  const getMessageTime = () => {
+    const timenum = message.date;
+    const lastMessage = new Date(
+      timenum.seconds * 1000 + timenum.nanoseconds / 10000
+    );
+    var today = new Date();
+    if (today.toLocaleDateString() === lastMessage.toLocaleDateString()) {
+      if (Number(lastMessage) >= Number(today)) return "Just Now";
+      else return lastMessage.toLocaleTimeString();
+    } else return lastMessage.toLocaleDateString();
+  };
+
   return (
     <div>
-      <div className="chat chat-start">
-        <div className="placeholder chat-image avatar">
+      <div
+        className={`chat ${
+          message.senderId === currentUser.uid ? "chat-end" : "chat-start"
+        }`}
+      >
+        <div className="chat-image avatar">
           <div className="w-12 rounded-full bg-neutral-focus text-neutral-content">
-            as
+            <img
+              src={
+                message.senderId === currentUser.uid
+                  ? currentUser.photoURL
+                  : data.user.photoURL
+              }
+              alt={
+                message.senderId === currentUser.uid
+                  ? currentUser.displayName
+                  : data.user.displayName
+              }
+            />
           </div>
         </div>
-        <div className="chat-header">
-          <time className="text-xs opacity-50">12:45</time>
+        <div
+          className={`chat-bubble ${
+            message.senderId === currentUser.uid
+              ? "chat-bubble-primary"
+              : "chat-bubble-accent"
+          }`}
+        >
+          {message.text}
         </div>
-        <div className="chat-bubble chat-bubble-accent">
-          You were the chosen one!
-        </div>
-        <div className="chat-footer opacity-50">Delivered</div>
-      </div>
-      <div className="chat chat-end">
-        <div className="placeholder chat-image avatar">
-          <div className="w-12 rounded-full bg-neutral-focus text-neutral-content">
-            ck
-          </div>
-        </div>
-        <div className="chat-header">
-          <time className="text-xs opacity-50">12:46</time>
-        </div>
-        <div className="chat-bubble chat-bubble-primary">I knew it!</div>
-        <div className="chat-footer opacity-50">Seen at 12:46</div>
+        <div className="chat-footer opacity-50">{getMessageTime()}</div>
+        {message.img && <img className="m-6 w-40" src={message.img} alt="" />}
       </div>
     </div>
   );

@@ -17,7 +17,6 @@ export default function Conversation() {
       unSub();
     };
   }, [data.chatId]);
-  console.log(messages);
 
   return (
     <div className="grow overflow-y-auto p-4">

@@ -20,10 +20,13 @@ export default function MessageInput() {
   const { currentUser }: any = useContext(AuthContext);
   const { data }: any = useContext(ChatContext);
 
+  function handleKey(e: any) {
+    e.code === "Enter" && handleSend();
+  }
+
   async function handleSend() {
     if (img) {
       const storageRef = ref(storage, uuid());
-
       const uploadTask = uploadBytesResumable(storageRef, img);
 
       uploadTask.on(
@@ -79,6 +82,7 @@ export default function MessageInput() {
           placeholder="Message"
           className="input-ghost input w-full grow p-0 focus:bg-transparent focus:outline-none"
           onChange={(e) => setText(e.target.value)}
+          onKeyDown={handleKey}
           value={text}
         />
         <label className="flex aspect-square h-10 w-10 items-center justify-center rounded-lg p-1 hover:bg-neutral">

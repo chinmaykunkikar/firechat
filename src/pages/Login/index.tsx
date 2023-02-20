@@ -1,10 +1,10 @@
 import { auth } from "@/firebase";
+import { AlertType, showAlert } from "@/utils/ShowAlert";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Slide, ToastContainer } from "react-toastify";
 
 export default function Login() {
-  const [error, setError] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: any) => {
@@ -15,8 +15,20 @@ export default function Login() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       navigate("/");
-    } catch (error) {
-      setError(true);
+    } catch (error: any) {
+      let errorCode = error.code;
+      let errorMessage = error.message;
+      if (errorCode === "auth/invalid-email") {
+        showAlert("This email is invalid.", AlertType.error);
+      } else if (errorCode === "auth/user-disabled") {
+        showAlert("This user is disabled.", AlertType.error);
+      } else if (errorCode === "auth/user-not-found") {
+        showAlert("User not found.", AlertType.error);
+      } else if (errorCode === "auth/wrong-password") {
+        showAlert("The password is incorrect.", AlertType.error);
+      } else {
+        showAlert(errorMessage, AlertType.error);
+      }
     }
   };
   return (
@@ -51,7 +63,6 @@ export default function Login() {
             />
           </div>
           <button className="btn-primary btn-wide btn mt-2">Login</button>
-          {error && <div className="text-error">Something went wrong.</div>}
         </form>
         <p className="mt-4 text-center">
           Don't have an account?{" "}
@@ -60,6 +71,15 @@ export default function Login() {
           </Link>
         </p>
       </div>
+      <ToastContainer
+        theme="colored"
+        position="top-right"
+        transition={Slide}
+        autoClose={5000}
+        hideProgressBar
+        pauseOnFocusLoss
+        pauseOnHover
+      />
     </div>
   );
 }

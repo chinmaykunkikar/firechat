@@ -49,6 +49,7 @@ export default function Login() {
               placeholder="e.g. sharmaamit@elite.club"
               autoComplete="email"
               className="input-bordered input w-full max-w-xs"
+              required
             />
           </div>
           <div className="form-control w-full max-w-xs">
@@ -59,7 +60,9 @@ export default function Login() {
               type="password"
               placeholder="e.g. ********"
               autoComplete="current-password"
+              id="current-password"
               className="input-bordered input w-full max-w-xs"
+              required
             />
           </div>
           <button className="btn-primary btn-wide btn mt-2">Login</button>

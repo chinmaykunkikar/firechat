@@ -90,6 +90,7 @@ export default function Register() {
               placeholder="e.g. Amit Sharma"
               autoComplete="name"
               className="input-bordered input w-full max-w-xs"
+              required
             />
           </div>
           <div className="form-control w-full max-w-xs">
@@ -101,6 +102,7 @@ export default function Register() {
               placeholder="e.g. sharmaamit@elite.club"
               autoComplete="email"
               className="input-bordered input w-full max-w-xs"
+              required
             />
           </div>
           <div className="form-control w-full max-w-xs">
@@ -109,9 +111,11 @@ export default function Register() {
             </label>
             <input
               type="password"
-              placeholder="e.g. ********"
+              placeholder="e.g. ******** (min. 6 characters)"
               autoComplete="new-password"
+              id="new-password"
               className="input-bordered input w-full max-w-xs"
+              required
             />
           </div>
           <div className="form-control w-full max-w-xs">

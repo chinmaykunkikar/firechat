@@ -4,16 +4,18 @@ import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
 import { auth, db, storage } from "@/firebase";
 import { Link, useNavigate } from "react-router-dom";
+import { AlertType, showAlert } from "@/utils/ShowAlert";
+import { ToastContainer, Slide } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Register() {
-  const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
   async function handleSubmit(e: any) {
     setLoading(true);
-    setError(false);
     e.preventDefault();
+    showAlert("Creating your Firechat account…", AlertType.info);
     const displayName: string = e.target[0].value;
     const email: string = e.target[1].value;
     const password: string = e.target[2].value;
@@ -39,18 +41,30 @@ export default function Register() {
             await setDoc(doc(db, "userChats", res.user.uid), {});
             setLoading(false);
             navigate("/login");
-          } catch (error) {
-            setLoading(false);
-            setError(true);
-            console.log(error);
+          } catch (error: any) {
+            showAlert(error.message, AlertType.error);
           }
         });
       });
-    } catch (error) {
-      setLoading(false);
-      setError(true);
-      console.log(error);
+    } catch (error: any) {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      if (errorCode === "auth/email-already-in-use") {
+        showAlert("This email is already in use.", AlertType.error);
+      } else if (errorCode === "auth/invalid-email") {
+        showAlert("This email is invalid.", AlertType.error);
+      } else if (errorCode === "auth/weak-password") {
+        showAlert("Password should be at least 6 characters", AlertType.error);
+      } else if (errorCode === "auth/operation-not-allowed") {
+        showAlert(
+          "Unexpected error. Please contact the maintainer to resolve this issue.",
+          AlertType.error
+        );
+      } else {
+        showAlert(errorMessage, AlertType.error);
+      }
     }
+    setLoading(false);
   }
 
   return (
@@ -107,12 +121,6 @@ export default function Register() {
           <button className="btn-primary btn-wide btn mt-2" disabled={loading}>
             Sign up
           </button>
-          {loading && (
-            <div className="text-info">
-              Creating your Firechat account&#8230;
-            </div>
-          )}
-          {error && <div className="text-error">Something went wrong.</div>}
         </form>
         <p className="mt-4 text-center">
           Already have an account?{" "}
@@ -121,6 +129,15 @@ export default function Register() {
           </Link>
         </p>
       </div>
+      <ToastContainer
+        theme="colored"
+        position="top-right"
+        transition={Slide}
+        autoClose={5000}
+        hideProgressBar
+        pauseOnFocusLoss
+        pauseOnHover
+      />
     </div>
   );
 }

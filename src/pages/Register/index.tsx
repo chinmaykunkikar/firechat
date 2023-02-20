@@ -1,4 +1,8 @@
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
@@ -39,16 +43,17 @@ export default function Register() {
               photoURL: downloadURL,
             });
             await setDoc(doc(db, "userChats", res.user.uid), {});
+            await signInWithEmailAndPassword(auth, email, password);
+            navigate("/");
             setLoading(false);
-            navigate("/login");
           } catch (error: any) {
             showAlert(error.message, AlertType.error);
           }
         });
       });
     } catch (error: any) {
-      var errorCode = error.code;
-      var errorMessage = error.message;
+      let errorCode = error.code;
+      let errorMessage = error.message;
       if (errorCode === "auth/email-already-in-use") {
         showAlert("This email is already in use.", AlertType.error);
       } else if (errorCode === "auth/invalid-email") {

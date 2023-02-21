@@ -1,11 +1,11 @@
-import ChatInfoBar from "@components/ChatInfoBar";
+import InfoBar from "@components/InfoBar";
 import Conversation from "@components/Conversation";
 import MessageInput from "@components/MessageInput";
 
-export default function Chat() {
+export default function ChatMain() {
   return (
     <div className="flex grow flex-col bg-neutral">
-      <ChatInfoBar />
+      <InfoBar />
       <Conversation />
       <MessageInput />
     </div>

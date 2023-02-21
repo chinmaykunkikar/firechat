@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import Home from "@pages/Home";
+import Chat from "@pages/Chat";
 import Login from "@pages/Login";
 import Register from "@pages/Register";
 import PageNotFound from "@pages/404";
@@ -23,7 +23,7 @@ export default function App() {
         path="/"
         element={
           <ProtectedRoute>
-            <Home />
+            <Chat />
           </ProtectedRoute>
         }
       />

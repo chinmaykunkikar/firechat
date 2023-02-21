@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { ChatContext } from "@/contexts/ChatContext";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
 
-export default function ChatInfoBar() {
+export default function InfoBar() {
   const { data }: any = useContext(ChatContext);
 
   return (

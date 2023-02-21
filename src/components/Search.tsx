@@ -13,7 +13,7 @@ import {
   where,
 } from "firebase/firestore";
 import { useContext, useState } from "react";
-import ChatContactPreview from "../ChatContactPreview";
+import ChatContactPreview from "./ChatContactPreview";
 
 export default function Search() {
   const [username, setUsername] = useState<string>("");

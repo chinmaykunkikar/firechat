@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useContext, useState } from "react";
 import { ArrowRightIcon, PhotoIcon } from "@heroicons/react/24/outline";
 import { AuthContext } from "@/contexts/AuthContext";

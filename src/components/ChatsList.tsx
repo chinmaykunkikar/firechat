@@ -33,7 +33,7 @@ export default function ChatsList() {
   };
 
   return (
-    <div className="flex flex-col gap-6 p-4">
+    <div className="flex cursor-default flex-col gap-6 p-4">
       {Object.entries(chats)
         ?.sort((a: any, b: any) => b[1].date - a[1].date)
         .map((chat: any) => (

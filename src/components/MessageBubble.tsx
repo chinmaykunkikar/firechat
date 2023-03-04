@@ -7,10 +7,10 @@ export default function MessageBubble({ message }: any) {
   const { currentUser }: any = useContext(AuthContext);
   const { data }: any = useContext(ChatContext);
 
-  const ref = useRef<null | HTMLDivElement>(null);
+  const scrollRef = useRef<null | HTMLDivElement>(null);
 
   useEffect(() => {
-    ref.current?.scrollIntoView({ behavior: "smooth" });
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [message]);
 
   const getMessageTime = () => {
@@ -26,36 +26,35 @@ export default function MessageBubble({ message }: any) {
   };
 
   return (
-    <div>
+    <div
+      className={`chat ${
+        message.senderId === currentUser.uid ? "chat-end" : "chat-start"
+      }`}
+      ref={scrollRef}
+    >
+      <div className="chat-image avatar">
+        <div className="w-8 rounded-full">
+          <Avvvatars
+            value={
+              message.senderId === currentUser.uid
+                ? currentUser.uid
+                : data.user.uid
+            }
+            style="shape"
+          />
+        </div>
+      </div>
       <div
-        className={`chat ${
-          message.senderId === currentUser.uid ? "chat-end" : "chat-start"
+        className={`chat-bubble ${
+          message.senderId === currentUser.uid
+            ? "chat-bubble-primary"
+            : "chat-bubble-accent"
         }`}
       >
-        <div className="chat-image avatar">
-          <div className="w-8 rounded-full">
-            <Avvvatars
-              value={
-                message.senderId === currentUser.uid
-                  ? currentUser.uid
-                  : data.user.uid
-              }
-              style="shape"
-            />
-          </div>
-        </div>
-        <div
-          className={`chat-bubble ${
-            message.senderId === currentUser.uid
-              ? "chat-bubble-primary"
-              : "chat-bubble-accent"
-          }`}
-        >
-          {message.text}
-        </div>
-        <div className="chat-footer opacity-50">{getMessageTime()}</div>
-        {message.img && <img className="m-6 w-40" src={message.img} alt="" />}
+        {message.text}
       </div>
+      <div className="chat-footer opacity-50">{getMessageTime()}</div>
+      {message.img && <img className="m-6 w-40" src={message.img} alt="" />}
     </div>
   );
 }

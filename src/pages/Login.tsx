@@ -7,11 +7,12 @@ import { Slide, ToastContainer } from "react-toastify";
 export default function Login() {
   const navigate = useNavigate();
 
+  const { VITE_DEMO_USER_EMAIL, VITE_DEMO_USER_PASSWORD } = import.meta.env;
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const email = e.target[0].value;
     const password = e.target[1].value;
-
     try {
       await signInWithEmailAndPassword(auth, email, password);
       navigate("/");
@@ -31,10 +32,26 @@ export default function Login() {
       }
     }
   };
+
+  const handleDemo = async (e: any) => {
+    e.preventDefault();
+    try {
+      await signInWithEmailAndPassword(
+        auth,
+        VITE_DEMO_USER_EMAIL,
+        VITE_DEMO_USER_PASSWORD
+      );
+      navigate("/");
+    } catch (error: any) {
+      let errorMessage = error.message;
+      showAlert(errorMessage, AlertType.error);
+    }
+  };
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-8">
       <div className="card flex w-1/3 flex-col rounded-3xl bg-base-300 p-8">
-        <div className="mx-auto mb-2 text-3xl font-bold">Fire Chat</div>
+        <div className="mx-auto mb-2 text-3xl font-bold">Hello!</div>
         <div className="mx-auto mb-4">Log into your account</div>
         <form
           className="flex flex-col items-center gap-4"
@@ -65,7 +82,17 @@ export default function Login() {
               required
             />
           </div>
-          <button className="btn-primary btn-wide btn mt-2">Login</button>
+          <div className="mt-2 flex flex-col gap-4">
+            <button type="submit" className="btn-primary btn-wide btn">
+              Login
+            </button>
+            <button
+              className="btn-outline btn-primary btn"
+              onClick={handleDemo}
+            >
+              Demo login
+            </button>
+          </div>
         </form>
         <p className="mt-4 text-center">
           Don't have an account?{" "}

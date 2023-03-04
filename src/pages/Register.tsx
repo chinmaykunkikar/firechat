@@ -3,10 +3,9 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
-import { auth, db, storage } from "@/firebase";
+import { auth, db } from "@/firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { AlertType, showAlert } from "@/utils/ShowAlert";
 import { ToastContainer, Slide } from "react-toastify";
@@ -23,34 +22,20 @@ export default function Register() {
     const displayName: string = e.target[0].value;
     const email: string = e.target[1].value;
     const password: string = e.target[2].value;
-    const avatar: Blob = e.target[3].files[0];
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
-
-      const date = new Date().getTime();
-      const storageRef = ref(storage, `${displayName + date}`);
-      await uploadBytesResumable(storageRef, avatar).then(() => {
-        getDownloadURL(storageRef).then(async (downloadURL) => {
-          try {
-            await updateProfile(res.user, {
-              displayName,
-              photoURL: downloadURL,
-            });
-            await setDoc(doc(db, "users", res.user.uid), {
-              uid: res.user.uid,
-              displayName,
-              email,
-              photoURL: downloadURL,
-            });
-            await setDoc(doc(db, "userChats", res.user.uid), {});
-            await signInWithEmailAndPassword(auth, email, password);
-            navigate("/");
-            setLoading(false);
-          } catch (error: any) {
-            showAlert(error.message, AlertType.error);
-          }
-        });
+      await updateProfile(res.user, {
+        displayName,
       });
+      await setDoc(doc(db, "users", res.user.uid), {
+        uid: res.user.uid,
+        displayName,
+        email,
+      });
+      await setDoc(doc(db, "userChats", res.user.uid), {});
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate("/");
+      setLoading(false);
     } catch (error: any) {
       let errorCode = error.code;
       let errorMessage = error.message;
@@ -116,15 +101,6 @@ export default function Register() {
               id="new-password"
               className="input-bordered input w-full max-w-xs"
               required
-            />
-          </div>
-          <div className="form-control w-full max-w-xs">
-            <label className="label">
-              <span className="label-text">Pick an avatar</span>
-            </label>
-            <input
-              type="file"
-              className="file-input-bordered file-input-accent file-input w-full max-w-xs"
             />
           </div>
           <button className="btn-primary btn-wide btn mt-2" disabled={loading}>

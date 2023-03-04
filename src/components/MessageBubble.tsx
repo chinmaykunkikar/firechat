@@ -1,5 +1,6 @@
 import { AuthContext } from "@/contexts/AuthContext";
 import { ChatContext } from "@/contexts/ChatContext";
+import Avvvatars from "avvvatars-react";
 import { useContext, useEffect, useRef } from "react";
 
 export default function MessageBubble({ message }: any) {
@@ -32,18 +33,14 @@ export default function MessageBubble({ message }: any) {
         }`}
       >
         <div className="chat-image avatar">
-          <div className="w-12 rounded-full bg-neutral-focus text-neutral-content">
-            <img
-              src={
+          <div className="w-8 rounded-full">
+            <Avvvatars
+              value={
                 message.senderId === currentUser.uid
-                  ? currentUser.photoURL
-                  : data.user.photoURL
+                  ? currentUser.uid
+                  : data.user.uid
               }
-              alt={
-                message.senderId === currentUser.uid
-                  ? currentUser.displayName
-                  : data.user.displayName
-              }
+              style="shape"
             />
           </div>
         </div>

@@ -1,6 +1,7 @@
 import { AuthContext } from "@/contexts/AuthContext";
 import { ChatContext } from "@/contexts/ChatContext";
 import { db } from "@/firebase";
+import Avvvatars from "avvvatars-react";
 import { doc, onSnapshot } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 
@@ -37,7 +38,6 @@ export default function ChatsList() {
       {Object.entries(chats)
         ?.sort((a: any, b: any) => b[1].date - a[1].date)
         .map((chat: any) => (
-          // TODO use <ChatContactPreview /> here
           <div
             className="flex gap-3"
             key={chat[0]}
@@ -45,11 +45,8 @@ export default function ChatsList() {
           >
             <div>
               <div className="avatar">
-                <div className="w-12 rounded-full bg-neutral-focus font-semibold text-neutral-content">
-                  <img
-                    src={chat[1].userInfo.photoURL}
-                    alt={chat[1].userInfo.displayName}
-                  />
+                <div className="w-8 rounded-full">
+                  <Avvvatars value={chat[1].userInfo.uid} style="shape" />
                 </div>
               </div>
             </div>

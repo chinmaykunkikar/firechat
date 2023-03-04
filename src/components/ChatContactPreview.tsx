@@ -1,3 +1,4 @@
+import Avvvatars from "avvvatars-react";
 import { DocumentData } from "firebase/firestore";
 
 type ChatContactPreviewProps = {
@@ -13,14 +14,13 @@ export default function ChatContactPreview({
     <div className="flex gap-3" onClick={handleSelect}>
       <div>
         <div className="avatar">
-          <div className="w-12 rounded-full bg-neutral-focus font-semibold text-neutral-content">
-            <img src={user?.photoURL} alt={user?.displayName} />
+          <div className="w-8 rounded-full">
+            <Avvvatars value={user?.uid} style="shape" />
           </div>
         </div>
       </div>
       <div className="flex flex-col">
         <div className="font-semibold">{user?.displayName}</div>
-        <div className="text-neutral-content">Hello</div>
       </div>
     </div>
   );

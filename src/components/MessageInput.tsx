@@ -118,7 +118,7 @@ export default function MessageInput() {
         <button
           className="btn-primary btn-sm btn-circle btn basis-24 text-base-content disabled:bg-base-100"
           onClick={handleSend}
-          disabled={!text}
+          disabled={text.trim().length === 0}
         >
           <ArrowRightIcon className="h-4 w-4" strokeWidth={3} />
         </button>

@@ -96,7 +96,7 @@ export default function Search() {
         placeholder={
           isDemoUser
             ? "Search is disabled for demo users."
-            : "Search for a user&#8230;"
+            : "Search for a user\u2026"
         }
         onKeyDown={handleKey}
         onChange={(e) => setUsername(e.target.value)}

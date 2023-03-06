@@ -1,4 +1,5 @@
 import { AuthContext } from "@contexts/AuthContext";
+import { ChatContext } from "@contexts/ChatContext";
 import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 import { auth } from "@/firebase";
 import { signOut } from "firebase/auth";
@@ -7,6 +8,12 @@ import Avvvatars from "avvvatars-react";
 
 export default function Navbar() {
   const { currentUser }: any = useContext(AuthContext);
+  const { dispatch }: any = useContext(ChatContext);
+
+  function handleSignOut() {
+    signOut(auth);
+    dispatch({ type: "USER_SIGNOUT" });
+  }
 
   return (
     <div className="flex h-16 select-none items-center justify-between bg-secondary px-4">
@@ -19,8 +26,8 @@ export default function Navbar() {
         </div>
         <div className="font-semibold">{currentUser.displayName}</div>
         <button
-          className="btn-ghost btn-square btn-xs btn"
-          onClick={() => signOut(auth)}
+          className="btn-ghost btn-xs btn-square btn"
+          onClick={handleSignOut}
         >
           <ArrowRightOnRectangleIcon />
         </button>

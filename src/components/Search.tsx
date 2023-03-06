@@ -1,5 +1,7 @@
 import { AuthContext } from "@/contexts/AuthContext";
 import { db } from "@/firebase";
+import useDemoUser from "@/utils/isDemoUser";
+import { AlertType, showAlert } from "@/utils/ShowAlert";
 import {
   collection,
   doc,
@@ -13,6 +15,7 @@ import {
   where,
 } from "firebase/firestore";
 import { useContext, useState } from "react";
+import { Slide, ToastContainer } from "react-toastify";
 import ChatContactPreview from "./ChatContactPreview";
 
 export default function Search() {
@@ -22,19 +25,25 @@ export default function Search() {
 
   const { currentUser }: any = useContext(AuthContext);
 
-  async function handleSearch() {
-    const q = query(
-      collection(db, "users"),
-      where("displayName", "==", username)
-    );
+  const isDemoUser = useDemoUser();
 
-    try {
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        setUser(doc.data());
-      });
-    } catch (error) {
-      setError(true);
+  async function handleSearch() {
+    if (isDemoUser) {
+      showAlert("Demo users still can't search other users 😉", AlertType.info);
+    } else {
+      const q = query(
+        collection(db, "users"),
+        where("displayName", "==", username)
+      );
+
+      try {
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          setUser(doc.data());
+        });
+      } catch (error) {
+        setError(true);
+      }
     }
   }
 
@@ -76,7 +85,6 @@ export default function Search() {
     } catch (error) {
       setError(true);
     }
-
     setUser(undefined);
     setUsername("");
   }
@@ -85,11 +93,16 @@ export default function Search() {
     <div>
       <input
         type="text"
-        placeholder="Search for a user&#8230;"
+        placeholder={
+          isDemoUser
+            ? "Search is disabled for demo users."
+            : "Search for a user&#8230;"
+        }
         onKeyDown={handleKey}
         onChange={(e) => setUsername(e.target.value)}
         value={username}
-        className="input-ghost input input-sm mt-2 w-full rounded-none focus:bg-transparent focus:outline-none"
+        disabled={isDemoUser}
+        className="input-ghost input input-sm mt-2 w-full rounded-none focus:bg-transparent focus:outline-none disabled:cursor-default"
       />
       {error && (
         <span className="text-sm font-semibold text-warning">
@@ -102,6 +115,15 @@ export default function Search() {
         )}
       </div>
       <div className="divider m-0"></div>
+      <ToastContainer
+        theme="colored"
+        position="top-center"
+        transition={Slide}
+        autoClose={5000}
+        hideProgressBar
+        pauseOnFocusLoss
+        pauseOnHover
+      />
     </div>
   );
 }

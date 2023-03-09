@@ -1,5 +1,6 @@
 import { auth } from "@/firebase";
 import { AlertType, showAlert } from "@/utils/ShowAlert";
+import FirechatLogo from "@components/FirechatLogo";
 import Login from "@components/Login";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
@@ -30,7 +31,10 @@ export default function Landing() {
       <div className="hero min-h-screen">
         <div className="hero-content flex-col gap-4 lg:flex-row">
           <div className="text-center lg:text-left">
-            <h1 className="mb-4 text-5xl font-bold">Firechat 🔥</h1>
+            <div className="flex items-center gap-2">
+              <FirechatLogo />
+              <h1 className="mb-4 text-5xl font-bold">Firechat</h1>
+            </div>
             <p className="mb-2 text-2xl">
               Introducing Firechat, a modern messaging app built with ReactJS,
               TailwindCSS, and Firebase. Firechat provides a fast and intuitive

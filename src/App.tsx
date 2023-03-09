@@ -1,10 +1,11 @@
-import { useContext } from "react";
+import { lazy, Suspense, useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import Chat from "@pages/Chat";
-import Landing from "@pages/Landing";
-import Register from "@pages/Register";
-import PageNotFound from "@pages/PageNotFound";
 import { AuthContext } from "@contexts/AuthContext";
+
+const Landing = lazy(() => import("@pages/Landing"));
+const Register = lazy(() => import("@pages/Register"));
+const Chat = lazy(() => import("@pages/Chat"));
+const PageNotFound = lazy(() => import("@pages/PageNotFound"));
 
 export default function App() {
   const { currentUser }: any = useContext(AuthContext);
@@ -17,19 +18,21 @@ export default function App() {
   }
 
   return (
-    <Routes>
-      <Route
-        index
-        path="/chat"
-        element={
-          <ProtectedRoute>
-            <Chat />
-          </ProtectedRoute>
-        }
-      />
-      <Route path="/" element={<Landing />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="*" element={<PageNotFound />} />
-    </Routes>
+    <Suspense fallback={<></>}>
+      <Routes>
+        <Route
+          index
+          path="/chat"
+          element={
+            <ProtectedRoute>
+              <Chat />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/" element={<Landing />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
+    </Suspense>
   );
 }

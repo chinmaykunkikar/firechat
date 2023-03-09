@@ -6,8 +6,6 @@ import { Link, useNavigate } from "react-router-dom";
 export default function Login() {
   const navigate = useNavigate();
 
-  const { VITE_DEMO_USER_EMAIL, VITE_DEMO_USER_PASSWORD } = import.meta.env;
-
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const email = e.target[0].value;
@@ -32,20 +30,6 @@ export default function Login() {
     }
   };
 
-  const handleDemo = async (e: any) => {
-    e.preventDefault();
-    try {
-      await signInWithEmailAndPassword(
-        auth,
-        VITE_DEMO_USER_EMAIL,
-        VITE_DEMO_USER_PASSWORD
-      );
-      navigate("/chat");
-    } catch (error: any) {
-      let errorMessage = error.message;
-      showAlert(errorMessage, AlertType.error);
-    }
-  };
   return (
     <div className="card w-full max-w-sm flex-shrink-0 bg-base-100 shadow-2xl">
       <div className="card-body">
@@ -80,24 +64,10 @@ export default function Login() {
               required
             />
           </div>
-          <div className="mt-2 flex flex-col gap-4">
-            <button type="submit" className="btn-primary btn-wide btn">
-              Login
-            </button>
-            <button
-              className="btn-outline btn-primary btn"
-              onClick={handleDemo}
-            >
-              Demo login
-            </button>
-          </div>
+          <button type="submit" className="btn-primary btn-wide btn mt-2">
+            Login
+          </button>
         </form>
-        <p className="mt-4 text-center">
-          Don't have an account?{" "}
-          <Link to="/register" className="link-secondary link font-semibold">
-            Register
-          </Link>
-        </p>
       </div>
     </div>
   );

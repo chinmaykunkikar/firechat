@@ -5,6 +5,7 @@ import { auth } from "@/firebase";
 import { signOut } from "firebase/auth";
 import { useContext } from "react";
 import Avvvatars from "avvvatars-react";
+import FirechatLogo from "./FirechatLogo";
 
 export default function Navbar() {
   const { currentUser }: any = useContext(AuthContext);
@@ -16,8 +17,11 @@ export default function Navbar() {
   }
 
   return (
-    <div className="flex h-16 select-none items-center justify-between bg-secondary px-4">
-      <span className="text-xl font-semibold">Fire Chat</span>
+    <div className="flex h-16 select-none items-center justify-between bg-neutral-focus px-4">
+      <div className="flex items-center gap-2">
+        <FirechatLogo className="h-8 w-8" />
+        <span className="text-xl font-semibold">Firechat</span>
+      </div>
       <div className="flex items-center justify-center gap-2">
         <div className="avatar">
           <div className="w-8 rounded-full">
@@ -26,10 +30,10 @@ export default function Navbar() {
         </div>
         <div className="font-semibold">{currentUser.displayName}</div>
         <button
-          className="btn-ghost btn-xs btn-square btn"
+          className="btn-ghost btn-square btn-sm btn gap-2"
           onClick={handleSignOut}
         >
-          <ArrowRightOnRectangleIcon />
+          <ArrowRightOnRectangleIcon className="h-6 w-6" />
         </button>
       </div>
     </div>

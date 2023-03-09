@@ -32,7 +32,7 @@ export default function Landing() {
         <div className="hero-content flex-col gap-4 lg:flex-row">
           <div className="text-center lg:text-left">
             <div className="flex items-center gap-2">
-              <FirechatLogo />
+              <FirechatLogo className="h-16 w-16" />
               <h1 className="mb-4 text-5xl font-bold">Firechat</h1>
             </div>
             <p className="mb-2 text-2xl">

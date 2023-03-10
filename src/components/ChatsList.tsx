@@ -34,21 +34,17 @@ export default function ChatsList() {
   };
 
   return (
-    <div className="flex cursor-default flex-col gap-6 p-4">
+    <div className="flex cursor-default flex-col">
       {Object.entries(chats)
         ?.sort((a: any, b: any) => b[1].date - a[1].date)
         .map((chat: any) => (
           <div
-            className="flex gap-3"
+            className="flex items-center gap-4 p-4 hover:cursor-pointer hover:bg-neutral active:bg-neutral-focus"
             key={chat[0]}
             onClick={() => handleSelect(chat[1].userInfo)}
           >
-            <div>
-              <div className="avatar">
-                <div className="w-8 rounded-full">
-                  <Avvvatars value={chat[1].userInfo.uid} style="shape" />
-                </div>
-              </div>
+            <div className="w-12 rounded-full">
+              <Avvvatars value={chat[1].userInfo.uid} style="shape" size={48} />
             </div>
             <div className="flex flex-col">
               <div className="font-semibold">

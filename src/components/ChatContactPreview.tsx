@@ -11,13 +11,12 @@ export default function ChatContactPreview({
   handleSearchSelect: handleSelect,
 }: ChatContactPreviewProps) {
   return (
-    <div className="flex gap-3" onClick={handleSelect}>
-      <div>
-        <div className="avatar">
-          <div className="w-8 rounded-full">
-            <Avvvatars value={user?.uid} style="shape" />
-          </div>
-        </div>
+    <div
+      className="flex items-center gap-4 p-4 hover:cursor-pointer hover:bg-neutral active:bg-neutral-focus"
+      onClick={handleSelect}
+    >
+      <div className="w-12 rounded-full">
+        <Avvvatars value={user?.uid} style="shape" size={48} />
       </div>
       <div className="flex flex-col">
         <div className="font-semibold">{user?.displayName}</div>

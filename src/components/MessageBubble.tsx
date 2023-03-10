@@ -10,7 +10,10 @@ export default function MessageBubble({ message }: any) {
   const scrollRef = useRef<null | HTMLDivElement>(null);
 
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+    scrollRef.current?.scrollIntoView({
+      behavior: "smooth",
+      inline: "start",
+    });
   }, [message]);
 
   const getMessageTime = () => {
@@ -54,7 +57,13 @@ export default function MessageBubble({ message }: any) {
         {message.text}
       </div>
       <div className="chat-footer opacity-50">{getMessageTime()}</div>
-      {message.img && <img className="m-6 w-40" src={message.img} alt="" />}
+      {message.img && (
+        <img
+          className="m-6 w-40 rounded border-2 border-primary-content p-4"
+          src={message.img}
+          alt=""
+        />
+      )}
     </div>
   );
 }

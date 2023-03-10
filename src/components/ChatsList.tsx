@@ -45,14 +45,18 @@ export default function ChatsList() {
             onClick={() => handleSelect(chat[1].userInfo)}
           >
             <div className="w-12 rounded-full">
-              <Avvvatars value={chat[1].userInfo.uid} style="shape" size={48} />
+              <Avvvatars
+                value={chat[1].userInfo?.uid}
+                style="shape"
+                size={48}
+              />
             </div>
             <div className="flex flex-col">
               <div className="font-semibold">
-                {chat[1].userInfo.displayName}
+                {chat[1].userInfo?.displayName}
               </div>
               <div className="flex items-center gap-1">
-                {chat[1].lastMessage.senderId === currentUser.uid && (
+                {chat[1].lastMessage?.senderId === currentUser.uid && (
                   <CheckIcon className="h-4 w-4 stroke-info stroke-[3]" />
                 )}
                 <div className="text-neutral-content">

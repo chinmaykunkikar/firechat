@@ -1,10 +1,44 @@
-import { auth } from "@/firebase";
+import { auth, db, googleProvider } from "@/firebase";
 import { AlertType, showAlert } from "@/utils/ShowAlert";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { Link, useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+import { Slide, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import GoogleLogo from "@components/GoogleLogo";
 
 export default function Login() {
   const navigate = useNavigate();
+
+  function signInWithGoogle() {
+    signInWithPopup(auth, googleProvider)
+      .then((res) => {
+        getDoc(doc(db, "users", res.user.uid))
+          .then(async (docSnap) => {
+            if (docSnap.exists()) navigate("/chat");
+            else {
+              showAlert("Creating your Firechat account…", AlertType.info);
+              const displayName = res.user.displayName;
+              const email = res.user.email;
+              await setDoc(doc(db, "users", res.user.uid), {
+                uid: res.user.uid,
+                displayName,
+                email,
+              });
+              await setDoc(doc(db, "userChats", res.user.uid), {});
+              navigate("/chat");
+            }
+          })
+          .catch((e) => {
+            let errorMessage = e.message;
+            showAlert(errorMessage, AlertType.error);
+          });
+      })
+      .catch((error) => {
+        let errorMessage = error.message;
+        showAlert(errorMessage, AlertType.error);
+      });
+  }
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -51,7 +85,7 @@ export default function Login() {
               required
             />
           </div>
-          <div className="form-control w-full max-w-xs">
+          <div className="w-full max-w-xs">
             <label className="label">
               <span className="label-text">Enter your password</span>
             </label>
@@ -68,6 +102,22 @@ export default function Login() {
             Login
           </button>
         </form>
+        <button
+          className="btn-wide btn mx-auto gap-2"
+          onClick={signInWithGoogle}
+        >
+          <GoogleLogo className="h-4 w-4" />
+          Sign in with Google
+        </button>
+        <ToastContainer
+          theme="colored"
+          position="top-right"
+          transition={Slide}
+          autoClose={5000}
+          hideProgressBar
+          pauseOnFocusLoss
+          pauseOnHover
+        />
       </div>
     </div>
   );

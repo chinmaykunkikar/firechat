@@ -73,6 +73,7 @@ export default function MessageInput() {
       await updateDoc(doc(db, "userChats", currentUser.uid), {
         [data.chatId + ".lastMessage"]: {
           text,
+          senderId: currentUser.uid,
         },
         [data.chatId + ".date"]: serverTimestamp(),
       });
@@ -80,6 +81,7 @@ export default function MessageInput() {
       await updateDoc(doc(db, "userChats", data.user.uid), {
         [data.chatId + ".lastMessage"]: {
           text,
+          senderId: currentUser.uid,
         },
         [data.chatId + ".date"]: serverTimestamp(),
       });

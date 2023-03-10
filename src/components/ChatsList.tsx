@@ -1,6 +1,7 @@
 import { AuthContext } from "@/contexts/AuthContext";
 import { ChatContext } from "@/contexts/ChatContext";
 import { db } from "@/firebase";
+import { CheckIcon } from "@heroicons/react/24/outline";
 import Avvvatars from "avvvatars-react";
 import { doc, onSnapshot } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
@@ -50,8 +51,13 @@ export default function ChatsList() {
               <div className="font-semibold">
                 {chat[1].userInfo.displayName}
               </div>
-              <div className="text-neutral-content">
-                {chat[1].lastMessage?.text}
+              <div className="flex items-center gap-1">
+                {chat[1].lastMessage.senderId === currentUser.uid && (
+                  <CheckIcon className="h-4 w-4 stroke-info stroke-[3]" />
+                )}
+                <div className="text-neutral-content">
+                  {chat[1].lastMessage?.text}
+                </div>
               </div>
             </div>
           </div>

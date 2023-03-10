@@ -90,31 +90,30 @@ export default function Search() {
   }
 
   return (
-    <div>
+    <div className="cursor-default">
       <input
         type="text"
         placeholder={
-          isDemoUser
-            ? "Search is disabled for demo users."
-            : "Search for a user\u2026"
+          isDemoUser ? "Search is disabled for demo users." : "Search\u2026"
         }
         onKeyDown={handleKey}
         onChange={(e) => setUsername(e.target.value)}
         value={username}
         disabled={isDemoUser}
-        className="input-ghost input input-sm mt-2 w-full rounded-none focus:bg-transparent focus:outline-none disabled:cursor-default"
+        className="input-ghost input input-sm my-2 w-full rounded-none text-lg focus:bg-transparent focus:outline-none disabled:cursor-default"
       />
       {error && (
-        <span className="text-sm font-semibold text-warning">
+        <span className="px-4 text-sm font-semibold text-warning">
           User not found. Try searching for the exact name.
         </span>
       )}
-      <div className="px-3">
-        {user && (
+      {user && (
+        <div>
+          <p className="px-4 text-sm font-bold text-success">User found</p>
           <ChatContactPreview user={user} handleSearchSelect={handleSelect} />
-        )}
-      </div>
-      <div className="divider m-0"></div>
+          <div className="divider m-0" />
+        </div>
+      )}
       <ToastContainer
         theme="colored"
         position="top-center"

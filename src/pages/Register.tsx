@@ -1,20 +1,44 @@
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signInWithPopup,
   updateProfile,
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
-import { auth, db } from "@/firebase";
+import { auth, db, googleProvider } from "@/firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { AlertType, showAlert } from "@/utils/ShowAlert";
 import { ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FirechatLogo from "@components/FirechatLogo";
+import GoogleLogo from "@components/GoogleLogo";
 
 export default function Register() {
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
+
+  function signUpWithGoogle() {
+    setLoading(true);
+    signInWithPopup(auth, googleProvider)
+      .then(async (res) => {
+        showAlert("Creating your Firechat account…", AlertType.info);
+        const displayName = res.user.displayName;
+        const email = res.user.email;
+        await setDoc(doc(db, "users", res.user.uid), {
+          uid: res.user.uid,
+          displayName,
+          email,
+        });
+        await setDoc(doc(db, "userChats", res.user.uid), {});
+        navigate("/chat");
+        setLoading(false);
+      })
+      .catch((error) => {
+        let errorMessage = error.message;
+        showAlert(errorMessage, AlertType.error);
+      });
+  }
 
   async function handleSubmit(e: any) {
     setLoading(true);
@@ -35,7 +59,7 @@ export default function Register() {
       });
       await setDoc(doc(db, "userChats", res.user.uid), {});
       await signInWithEmailAndPassword(auth, email, password);
-      navigate("/");
+      navigate("/chat");
       setLoading(false);
     } catch (error: any) {
       let errorCode = error.code;
@@ -59,20 +83,20 @@ export default function Register() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-base-300">
+    <div className="flex min-h-screen cursor-default flex-col items-center justify-center bg-base-300 ">
       <div className="card flex w-1/3 flex-col bg-base-100">
         <div className="card-body">
           <div className="flex justify-center">
             <FirechatLogo className="h-14 w-14" />
           </div>
-          <div className="mx-auto mb-4 font-bold">
+          <div className="mx-auto mb-4 text-lg font-bold">
             Create your Firechat account
           </div>
           <form
-            className="flex flex-col items-center gap-4"
+            className="form-control flex flex-col items-center gap-4"
             onSubmit={handleSubmit}
           >
-            <div className="form-control w-full max-w-xs">
+            <div className="w-full max-w-xs">
               <label className="label">
                 <span className="label-text">What is your name?</span>
               </label>
@@ -84,7 +108,7 @@ export default function Register() {
                 required
               />
             </div>
-            <div className="form-control w-full max-w-xs">
+            <div className="w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Enter your email address</span>
               </label>
@@ -96,7 +120,7 @@ export default function Register() {
                 required
               />
             </div>
-            <div className="form-control w-full max-w-xs">
+            <div className="w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Enter a password</span>
               </label>
@@ -114,6 +138,14 @@ export default function Register() {
               disabled={loading}
             >
               Sign up
+            </button>
+            <button
+              className="btn-wide btn gap-2"
+              disabled={loading}
+              onClick={signUpWithGoogle}
+            >
+              <GoogleLogo className="h-4 w-4" />
+              Sign up with Google
             </button>
           </form>
           <p className="mt-4 text-center">

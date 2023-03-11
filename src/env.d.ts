@@ -10,6 +10,8 @@ interface ImportMetaEnv {
   readonly VITE_FIREBASE_MEASUREMENT_ID: string;
   readonly VITE_DEMO_USER_EMAIL: string;
   readonly VITE_DEMO_USER_PASSWORD: string;
+  readonly VITE_ALGOLIA_APP_ID: string;
+  readonly VITE_ALGOLIA_API_KEY: string;
 }
 
 interface ImportMeta {

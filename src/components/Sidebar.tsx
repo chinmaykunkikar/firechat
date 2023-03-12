@@ -1,12 +1,12 @@
 import ChatsList from "@components/ChatsList";
 import Navbar from "@components/Navbar";
-import Search from "@components/Search";
+import AlgoliaSearch from "./AlgoliaSearch";
 
 export default function Sidebar() {
   return (
-    <div className="basis-1/3 bg-base-300">
+    <div className="basis-1/3 overflow-y-scroll bg-base-300">
       <Navbar />
-      <Search />
+      <AlgoliaSearch />
       <ChatsList />
     </div>
   );

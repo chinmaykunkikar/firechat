@@ -22,6 +22,8 @@ export const ChatContextProvider = ({ children }: any) => {
         };
       case "USER_SIGNOUT":
         return INITIAL_STATE;
+      case "CHAT_DELETE":
+        return INITIAL_STATE;
       default:
         return state;
     }

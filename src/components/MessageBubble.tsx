@@ -12,7 +12,8 @@ export default function MessageBubble({ message }: any) {
   useEffect(() => {
     scrollRef.current?.scrollIntoView({
       behavior: "smooth",
-      inline: "start",
+      inline: "center",
+      block: "center",
     });
   }, [message]);
 

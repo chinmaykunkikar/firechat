@@ -2,18 +2,18 @@ import Avvvatars from "avvvatars-react";
 import { DocumentData } from "firebase/firestore";
 
 type ChatContactPreviewProps = {
-  handleSearchSelect?: React.MouseEventHandler<HTMLDivElement> | undefined;
-  user?: DocumentData;
+  handleSearchSelect: (user: DocumentData | undefined) => void;
+  user: DocumentData;
 };
 
 export default function ChatContactPreview({
   user,
-  handleSearchSelect: handleSelect,
+  handleSearchSelect,
 }: ChatContactPreviewProps) {
   return (
     <div
       className="flex items-center gap-4 p-4 hover:cursor-pointer hover:bg-neutral active:bg-neutral-focus"
-      onClick={handleSelect}
+      onClick={() => handleSearchSelect(user)}
     >
       <div className="w-12 rounded-full">
         <Avvvatars value={user?.uid} style="shape" size={48} />

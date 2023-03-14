@@ -16,13 +16,15 @@ import {
 } from "firebase/firestore";
 import { useContext, useState } from "react";
 import { Slide, ToastContainer } from "react-toastify";
-import ChatContactPreview from "@components/ChatContactPreview";
 import Modal from "@components/Modal";
+import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import ChatContactPreview from "./ChatContactPreview";
 
 export default function Search() {
-  const [username, setUsername] = useState<string>("");
-  const [user, setUser] = useState<DocumentData>();
+  const [searchQuery, setQuery] = useState<string>("");
+  const [users, setUsers] = useState<DocumentData>();
   const [error, setError] = useState<boolean>(false);
+  const [noUsers, setNoUsers] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
 
   const { currentUser }: any = useContext(AuthContext);
@@ -37,12 +39,12 @@ export default function Search() {
   }
 
   function handleType(event: React.ChangeEvent<HTMLInputElement>) {
-    const query = event.target.value;
-    if (query.length === 0) {
-      setUser(undefined);
-      setUsername("");
+    const queryString = event.target.value;
+    if (queryString.length === 0) {
+      setQuery("");
+      setNoUsers(false);
     }
-    setUsername(query);
+    setQuery(queryString);
   }
 
   async function handleSearch() {
@@ -51,22 +53,21 @@ export default function Search() {
     } else {
       const q = query(
         collection(db, "users"),
-        where("displayName", ">=", username),
-        where("displayName", "<=", username + "\uf8ff")
+        where("displayName", ">=", searchQuery),
+        where("displayName", "<=", searchQuery + "\uf8ff")
       );
 
       try {
         const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-          setUser(doc.data());
-        });
+        if (querySnapshot.docs.length === 0) setNoUsers(true);
+        setUsers(querySnapshot.docs.map((doc) => doc.data()));
       } catch (error) {
         setError(true);
       }
     }
   }
 
-  async function handleSelect() {
+  async function handleSelect(user: DocumentData) {
     const combinedId =
       user &&
       (currentUser.uid > user.uid
@@ -100,54 +101,58 @@ export default function Search() {
     } catch (error) {
       setError(true);
     }
-    setUser(undefined);
-    setUsername("");
+    setQuery("");
     setOpen(false);
   }
 
   return (
     <div className="cursor-default">
-      <input
-        type="text"
-        placeholder={
-          isDemoUser
-            ? "Search is disabled for demo users."
-            : "Find users and start conversations"
-        }
+      <div
+        className="flex w-full cursor-pointer items-center gap-2 p-4 text-secondary"
         onClick={handleToggle}
-        disabled={isDemoUser}
-        className="input-ghost input input-sm my-2 w-full cursor-pointer rounded-none caret-transparent focus:bg-transparent focus:outline-none disabled:cursor-default"
-      />
+      >
+        <MagnifyingGlassIcon className="h-6 w-6 stroke-accent stroke-[3]" />
+        <p className="text-sm font-bold">Find users to start conversations</p>
+      </div>
       <Modal open={open} onClose={handleToggle}>
+        <div className="mb-4 flex items-center justify-between">
+          <p className="text-lg font-bold">Find users by their names</p>
+          <button
+            className="btn-ghost btn-xs btn-circle btn"
+            onClick={handleToggle}
+          >
+            <XMarkIcon />
+          </button>
+        </div>
         <input
           type="text"
+          autoFocus
           placeholder={
             isDemoUser ? "Search is disabled for demo users." : "Search\u2026"
           }
           onKeyDown={handleKey}
           onChange={handleType}
-          value={username}
+          value={searchQuery}
           disabled={isDemoUser}
           className="input-bordered input w-full text-lg focus:bg-transparent focus:outline-none disabled:cursor-default"
         />
         {error && (
           <span className="px-4 text-sm font-semibold text-warning">
-            User not found. Try searching for the exact name.
+            Search has run into some problems.
           </span>
         )}
-        {user && (
-          <div>
-            <ChatContactPreview user={user} handleSearchSelect={handleSelect} />
+        {users &&
+          users.map((user: DocumentData) => (
+            <ChatContactPreview
+              user={user}
+              handleSearchSelect={() => handleSelect(user)}
+            />
+          ))}
+        {noUsers && (
+          <div className="mt-1 w-full p-1 font-semibold text-info">
+            User not found.
           </div>
         )}
-        <div className="modal-action justify-center">
-          <button
-            className="btn-outline btn-secondary btn-wide btn"
-            onClick={handleToggle}
-          >
-            Cancel
-          </button>
-        </div>
       </Modal>
       <ToastContainer
         theme="colored"

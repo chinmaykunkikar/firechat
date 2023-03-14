@@ -15,6 +15,7 @@ export default function InfoBar() {
 
   async function deleteChat(e: SyntheticEvent) {
     e.preventDefault();
+    setOpen(false);
     await updateDoc(doc(db, "userChats", currentUser.uid), {
       [data.chatId]: deleteField(),
     });
@@ -23,7 +24,6 @@ export default function InfoBar() {
     });
     await deleteDoc(doc(db, "chats", data.chatId));
     dispatch({ type: "CHAT_DELETE" });
-    setOpen((prev) => !prev);
   }
 
   function handleToggle() {
@@ -38,7 +38,7 @@ export default function InfoBar() {
           <div className="text-lg font-semibold">{data?.user.displayName}</div>
         </div>
         <div className="dropdown-end dropdown">
-          <label tabIndex={0} className="btn-ghost btn-sm btn-square btn">
+          <label tabIndex={0} className="btn-ghost btn-square btn-sm btn">
             <EllipsisVerticalIcon className="h-8 w-8" />
           </label>
           <ul

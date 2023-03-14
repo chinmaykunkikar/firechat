@@ -1,4 +1,4 @@
-import { AuthContext } from "@/contexts/AuthContext";
+import { AuthContext } from "@contexts/AuthContext";
 import { db } from "@/firebase";
 import useDemoUser from "@/utils/isDemoUser";
 import { AlertType, showAlert } from "@/utils";
@@ -16,16 +16,34 @@ import {
 } from "firebase/firestore";
 import { useContext, useState } from "react";
 import { Slide, ToastContainer } from "react-toastify";
-import ChatContactPreview from "./ChatContactPreview";
+import ChatContactPreview from "@components/ChatContactPreview";
+import Modal from "@components/Modal";
 
 export default function Search() {
   const [username, setUsername] = useState<string>("");
   const [user, setUser] = useState<DocumentData>();
   const [error, setError] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
 
   const { currentUser }: any = useContext(AuthContext);
-
   const isDemoUser = useDemoUser();
+
+  function handleToggle() {
+    setOpen((prev) => !prev);
+  }
+
+  function handleKey(e: React.KeyboardEvent) {
+    e.code === "Enter" && handleSearch();
+  }
+
+  function handleType(event: React.ChangeEvent<HTMLInputElement>) {
+    const query = event.target.value;
+    if (query.length === 0) {
+      setUser(undefined);
+      setUsername("");
+    }
+    setUsername(query);
+  }
 
   async function handleSearch() {
     if (isDemoUser) {
@@ -33,7 +51,8 @@ export default function Search() {
     } else {
       const q = query(
         collection(db, "users"),
-        where("displayName", "==", username)
+        where("displayName", ">=", username),
+        where("displayName", "<=", username + "\uf8ff")
       );
 
       try {
@@ -45,10 +64,6 @@ export default function Search() {
         setError(true);
       }
     }
-  }
-
-  function handleKey(e: any) {
-    e.code === "Enter" && handleSearch();
   }
 
   async function handleSelect() {
@@ -87,6 +102,7 @@ export default function Search() {
     }
     setUser(undefined);
     setUsername("");
+    setOpen(false);
   }
 
   return (
@@ -94,26 +110,45 @@ export default function Search() {
       <input
         type="text"
         placeholder={
-          isDemoUser ? "Search is disabled for demo users." : "Search\u2026"
+          isDemoUser
+            ? "Search is disabled for demo users."
+            : "Find users and start conversations"
         }
-        onKeyDown={handleKey}
-        onChange={(e) => setUsername(e.target.value)}
-        value={username}
+        onClick={handleToggle}
         disabled={isDemoUser}
-        className="input-ghost input input-sm my-2 w-full rounded-none text-lg focus:bg-transparent focus:outline-none disabled:cursor-default"
+        className="input-ghost input input-sm my-2 w-full cursor-pointer rounded-none caret-transparent focus:bg-transparent focus:outline-none disabled:cursor-default"
       />
-      {error && (
-        <span className="px-4 text-sm font-semibold text-warning">
-          User not found. Try searching for the exact name.
-        </span>
-      )}
-      {user && (
-        <div>
-          <p className="px-4 text-sm font-bold text-success">User found</p>
-          <ChatContactPreview user={user} handleSearchSelect={handleSelect} />
-          <div className="divider m-0" />
+      <Modal open={open} onClose={handleToggle}>
+        <input
+          type="text"
+          placeholder={
+            isDemoUser ? "Search is disabled for demo users." : "Search\u2026"
+          }
+          onKeyDown={handleKey}
+          onChange={handleType}
+          value={username}
+          disabled={isDemoUser}
+          className="input-bordered input w-full text-lg focus:bg-transparent focus:outline-none disabled:cursor-default"
+        />
+        {error && (
+          <span className="px-4 text-sm font-semibold text-warning">
+            User not found. Try searching for the exact name.
+          </span>
+        )}
+        {user && (
+          <div>
+            <ChatContactPreview user={user} handleSearchSelect={handleSelect} />
+          </div>
+        )}
+        <div className="modal-action justify-center">
+          <button
+            className="btn-outline btn-secondary btn-wide btn"
+            onClick={handleToggle}
+          >
+            Cancel
+          </button>
         </div>
-      )}
+      </Modal>
       <ToastContainer
         theme="colored"
         position="top-center"

@@ -36,6 +36,7 @@ export default function Register() {
       })
       .catch((error) => {
         handleFirebaseError(error);
+        setLoading(false);
       });
   }
 
@@ -62,6 +63,7 @@ export default function Register() {
       setLoading(false);
     } catch (error: any) {
       handleFirebaseError(error);
+      setLoading(false);
     }
     setLoading(false);
   }

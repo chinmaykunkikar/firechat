@@ -59,8 +59,12 @@ export default function Search() {
 
       try {
         const querySnapshot = await getDocs(q);
-        if (querySnapshot.docs.length === 0) setNoUsers(true);
-        setUsers(querySnapshot.docs.map((doc) => doc.data()));
+        const queryData = querySnapshot.docs.map((doc) => doc.data());
+        if (
+          queryData.filter((user: DocumentData) => !user.demoUser).length === 0
+        )
+          setNoUsers(true);
+        setUsers(queryData);
       } catch (error) {
         setError(true);
       }
@@ -75,6 +79,11 @@ export default function Search() {
         : user.uid + currentUser.uid);
     try {
       const res = await getDoc(doc(db, "chats", combinedId));
+      if (res)
+        showAlert(
+          `Psst! ${user.displayName} is already present in your chats.`,
+          AlertType.info
+        );
 
       if (!res.exists()) {
         await setDoc(doc(db, "chats", combinedId), { messages: [] });
@@ -142,12 +151,15 @@ export default function Search() {
           </span>
         )}
         {users &&
-          users.map((user: DocumentData) => (
-            <ChatContactPreview
-              user={user}
-              handleSearchSelect={() => handleSelect(user)}
-            />
-          ))}
+          users
+            .filter((user: DocumentData) => !user.demoUser)
+            .filter((user: DocumentData) => user.uid !== currentUser.uid)
+            .map((user: DocumentData) => (
+              <ChatContactPreview
+                user={user}
+                handleSearchSelect={() => handleSelect(user)}
+              />
+            ))}
         {noUsers && (
           <div className="mt-1 w-full p-1 font-semibold text-info">
             User not found.

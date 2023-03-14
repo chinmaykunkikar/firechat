@@ -1,9 +1,10 @@
 // @ts-nocheck
-import { useContext, useState } from "react";
-import { ArrowRightIcon, PhotoIcon } from "@heroicons/react/24/outline";
+import { db, storage } from "@/firebase";
+import { AlertType, showAlert } from "@/utils";
+import useDemoUser from "@/utils/isDemoUser";
 import { AuthContext } from "@contexts/AuthContext";
 import { ChatContext } from "@contexts/ChatContext";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { ArrowRightIcon, PhotoIcon } from "@heroicons/react/24/outline";
 import {
   arrayUnion,
   doc,
@@ -11,11 +12,10 @@ import {
   Timestamp,
   updateDoc,
 } from "firebase/firestore";
-import { db, storage } from "@/firebase";
-import { v4 as uuid } from "uuid";
-import useDemoUser from "@/utils/isDemoUser";
-import { AlertType, showAlert } from "@/utils";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { useContext, useState } from "react";
 import { Slide, ToastContainer } from "react-toastify";
+import { v4 as uuid } from "uuid";
 
 export default function MessageInput() {
   const [text, setText] = useState<string>("");

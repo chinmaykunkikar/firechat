@@ -1,6 +1,6 @@
+import { db } from "@/firebase";
 import { AuthContext } from "@contexts/AuthContext";
 import { ChatContext } from "@contexts/ChatContext";
-import { db } from "@/firebase";
 import { CheckIcon } from "@heroicons/react/24/outline";
 import Avvvatars from "avvvatars-react";
 import { doc, onSnapshot } from "firebase/firestore";

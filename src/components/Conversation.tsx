@@ -1,6 +1,6 @@
-import { ChatContext } from "@contexts/ChatContext";
 import { db } from "@/firebase";
 import MessageBubble from "@components/MessageBubble";
+import { ChatContext } from "@contexts/ChatContext";
 import { ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/outline";
 import { doc, onSnapshot } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";

@@ -1,9 +1,9 @@
-import InfoBar from "@components/InfoBar";
 import Conversation from "@components/Conversation";
+import InfoBar from "@components/InfoBar";
 import MessageInput from "@components/MessageInput";
-import { useContext } from "react";
 import { ChatContext } from "@contexts/ChatContext";
 import { ChatBubbleLeftRightIcon } from "@heroicons/react/24/outline";
+import { useContext } from "react";
 
 export default function ChatMain() {
   const { data }: any = useContext(ChatContext);

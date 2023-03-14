@@ -1,3 +1,7 @@
+import { auth, db, googleProvider } from "@/firebase";
+import { AlertType, handleFirebaseError, showAlert } from "@/utils";
+import FirechatLogo from "@components/FirechatLogo";
+import GoogleLogo from "@components/GoogleLogo";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -6,13 +10,9 @@ import {
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
-import { auth, db, googleProvider } from "@/firebase";
 import { Link, useNavigate } from "react-router-dom";
-import { AlertType, handleFirebaseError, showAlert } from "@/utils";
 import { ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import FirechatLogo from "@components/FirechatLogo";
-import GoogleLogo from "@components/GoogleLogo";
 
 export default function Register() {
   const [loading, setLoading] = useState<boolean>(false);

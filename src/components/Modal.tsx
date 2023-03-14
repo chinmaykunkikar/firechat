@@ -1,5 +1,6 @@
-import React, { useRef } from "react";
 import cn from "classnames";
+import React, { useRef } from "react";
+
 type Props = {
   children: React.ReactNode;
   open: boolean;

@@ -1,7 +1,10 @@
-import { AuthContext } from "@contexts/AuthContext";
 import { db } from "@/firebase";
-import useDemoUser from "@/utils/isDemoUser";
 import { AlertType, showAlert } from "@/utils";
+import useDemoUser from "@/utils/isDemoUser";
+import ChatContactPreview from "@components/ChatContactPreview";
+import Modal from "@components/Modal";
+import { AuthContext } from "@contexts/AuthContext";
+import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import {
   collection,
   doc,
@@ -16,9 +19,6 @@ import {
 } from "firebase/firestore";
 import { useContext, useState } from "react";
 import { Slide, ToastContainer } from "react-toastify";
-import Modal from "@components/Modal";
-import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import ChatContactPreview from "./ChatContactPreview";
 
 export default function Search() {
   const [searchQuery, setQuery] = useState<string>("");

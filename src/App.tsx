@@ -1,6 +1,6 @@
+import { AuthContext } from "@contexts/AuthContext";
 import { lazy, Suspense, useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { AuthContext } from "@contexts/AuthContext";
 
 const Landing = lazy(() => import("@pages/Landing"));
 const Register = lazy(() => import("@pages/Register"));

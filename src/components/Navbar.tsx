@@ -1,11 +1,11 @@
+import FirechatLogo from "./FirechatLogo";
+import { auth } from "@/firebase";
 import { AuthContext } from "@contexts/AuthContext";
 import { ChatContext } from "@contexts/ChatContext";
 import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
-import { auth } from "@/firebase";
+import Avvvatars from "avvvatars-react";
 import { signOut } from "firebase/auth";
 import { useContext } from "react";
-import Avvvatars from "avvvatars-react";
-import FirechatLogo from "./FirechatLogo";
 
 export default function Navbar() {
   const { currentUser }: any = useContext(AuthContext);

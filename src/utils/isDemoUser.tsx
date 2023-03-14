@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
 import { auth, db } from "@/firebase";
 import { doc, getDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
 
 export default function useDemoUser() {
   const [isDemoUser, setDemoUser] = useState<boolean>(false);

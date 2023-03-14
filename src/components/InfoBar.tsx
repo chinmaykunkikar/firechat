@@ -1,11 +1,11 @@
-import { SyntheticEvent, useContext, useState } from "react";
+import { db } from "@/firebase";
+import Modal from "@components/Modal";
 import { AuthContext } from "@contexts/AuthContext";
 import { ChatContext } from "@contexts/ChatContext";
 import { EllipsisVerticalIcon, TrashIcon } from "@heroicons/react/24/outline";
-import { db } from "@/firebase";
-import { deleteDoc, deleteField, doc, updateDoc } from "firebase/firestore";
 import Avvvatars from "avvvatars-react";
-import Modal from "@components/Modal";
+import { deleteDoc, deleteField, doc, updateDoc } from "firebase/firestore";
+import { SyntheticEvent, useContext, useState } from "react";
 
 export default function InfoBar() {
   const { currentUser }: any = useContext(AuthContext);

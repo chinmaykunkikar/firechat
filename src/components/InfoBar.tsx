@@ -1,6 +1,6 @@
 import { SyntheticEvent, useContext, useState } from "react";
 import { AuthContext } from "@contexts/AuthContext";
-import { ChatContext } from "@/contexts/ChatContext";
+import { ChatContext } from "@contexts/ChatContext";
 import { EllipsisVerticalIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { db } from "@/firebase";
 import { deleteDoc, deleteField, doc, updateDoc } from "firebase/firestore";
@@ -38,7 +38,7 @@ export default function InfoBar() {
           <div className="text-lg font-semibold">{data?.user.displayName}</div>
         </div>
         <div className="dropdown-end dropdown">
-          <label tabIndex={0} className="btn-ghost btn-square btn-sm btn">
+          <label tabIndex={0} className="btn-ghost btn-sm btn-square btn">
             <EllipsisVerticalIcon className="h-8 w-8" />
           </label>
           <ul

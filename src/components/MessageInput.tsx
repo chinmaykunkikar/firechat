@@ -1,8 +1,8 @@
 // @ts-nocheck
 import { useContext, useState } from "react";
 import { ArrowRightIcon, PhotoIcon } from "@heroicons/react/24/outline";
-import { AuthContext } from "@/contexts/AuthContext";
-import { ChatContext } from "@/contexts/ChatContext";
+import { AuthContext } from "@contexts/AuthContext";
+import { ChatContext } from "@contexts/ChatContext";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import {
   arrayUnion,

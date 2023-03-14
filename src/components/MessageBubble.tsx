@@ -1,5 +1,5 @@
-import { AuthContext } from "@/contexts/AuthContext";
-import { ChatContext } from "@/contexts/ChatContext";
+import { AuthContext } from "@contexts/AuthContext";
+import { ChatContext } from "@contexts/ChatContext";
 import Avvvatars from "avvvatars-react";
 import { useContext, useEffect, useRef } from "react";
 

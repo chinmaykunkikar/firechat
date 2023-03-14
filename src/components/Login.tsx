@@ -1,5 +1,5 @@
 import { auth, db, googleProvider } from "@/firebase";
-import { AlertType, showAlert } from "@/utils/ShowAlert";
+import { AlertType, handleFirebaseError, showAlert } from "@/utils";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
@@ -29,14 +29,12 @@ export default function Login() {
               navigate("/chat");
             }
           })
-          .catch((e) => {
-            let errorMessage = e.message;
-            showAlert(errorMessage, AlertType.error);
+          .catch((error) => {
+            handleFirebaseError(error);
           });
       })
       .catch((error) => {
-        let errorMessage = error.message;
-        showAlert(errorMessage, AlertType.error);
+        handleFirebaseError(error);
       });
   }
 
@@ -48,19 +46,7 @@ export default function Login() {
       await signInWithEmailAndPassword(auth, email, password);
       navigate("/chat");
     } catch (error: any) {
-      let errorCode = error.code;
-      let errorMessage = error.message;
-      if (errorCode === "auth/invalid-email") {
-        showAlert("This email is invalid.", AlertType.error);
-      } else if (errorCode === "auth/user-disabled") {
-        showAlert("This user is disabled.", AlertType.error);
-      } else if (errorCode === "auth/user-not-found") {
-        showAlert("User not found.", AlertType.error);
-      } else if (errorCode === "auth/wrong-password") {
-        showAlert("The password is incorrect.", AlertType.error);
-      } else {
-        showAlert(errorMessage, AlertType.error);
-      }
+      handleFirebaseError(error);
     }
   };
 

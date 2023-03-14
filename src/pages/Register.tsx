@@ -8,7 +8,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
 import { auth, db, googleProvider } from "@/firebase";
 import { Link, useNavigate } from "react-router-dom";
-import { AlertType, showAlert } from "@/utils/ShowAlert";
+import { AlertType, handleFirebaseError, showAlert } from "@/utils";
 import { ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FirechatLogo from "@components/FirechatLogo";
@@ -35,8 +35,7 @@ export default function Register() {
         setLoading(false);
       })
       .catch((error) => {
-        let errorMessage = error.message;
-        showAlert(errorMessage, AlertType.error);
+        handleFirebaseError(error);
       });
   }
 
@@ -62,22 +61,7 @@ export default function Register() {
       navigate("/chat");
       setLoading(false);
     } catch (error: any) {
-      let errorCode = error.code;
-      let errorMessage = error.message;
-      if (errorCode === "auth/email-already-in-use") {
-        showAlert("This email is already in use.", AlertType.error);
-      } else if (errorCode === "auth/invalid-email") {
-        showAlert("This email is invalid.", AlertType.error);
-      } else if (errorCode === "auth/weak-password") {
-        showAlert("Password should be at least 6 characters", AlertType.error);
-      } else if (errorCode === "auth/operation-not-allowed") {
-        showAlert(
-          "Unexpected error. Please contact the maintainer to resolve this issue.",
-          AlertType.error
-        );
-      } else {
-        showAlert(errorMessage, AlertType.error);
-      }
+      handleFirebaseError(error);
     }
     setLoading(false);
   }

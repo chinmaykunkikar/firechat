@@ -1,5 +1,5 @@
 import { auth } from "@/firebase";
-import { AlertType, showAlert } from "@/utils/ShowAlert";
+import { AlertType, showAlert } from "@/utils";
 import FirechatLogo from "@components/FirechatLogo";
 import Login from "@components/Login";
 import { signInWithEmailAndPassword } from "firebase/auth";

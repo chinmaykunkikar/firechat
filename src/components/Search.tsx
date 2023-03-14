@@ -1,7 +1,7 @@
 import { AuthContext } from "@/contexts/AuthContext";
 import { db } from "@/firebase";
 import useDemoUser from "@/utils/isDemoUser";
-import { AlertType, showAlert } from "@/utils/ShowAlert";
+import { AlertType, showAlert } from "@/utils";
 import {
   collection,
   doc,

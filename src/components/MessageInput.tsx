@@ -14,7 +14,7 @@ import {
 import { db, storage } from "@/firebase";
 import { v4 as uuid } from "uuid";
 import useDemoUser from "@/utils/isDemoUser";
-import { AlertType, showAlert } from "@/utils/ShowAlert";
+import { AlertType, showAlert } from "@/utils";
 import { Slide, ToastContainer } from "react-toastify";
 
 export default function MessageInput() {

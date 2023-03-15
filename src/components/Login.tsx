@@ -1,5 +1,10 @@
 import { auth, db, googleProvider } from "@/firebase";
 import { AlertType, handleFirebaseError, showAlert } from "@/utils";
+import {
+  DB_COLLECTION_USERCHATS,
+  DB_COLLECTION_USERS,
+  ROUTE_CHAT,
+} from "@/utils/constants";
 import GoogleLogo from "@components/GoogleLogo";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
@@ -13,20 +18,20 @@ export default function Login() {
   function signInWithGoogle() {
     signInWithPopup(auth, googleProvider)
       .then((res) => {
-        getDoc(doc(db, "users", res.user.uid))
+        getDoc(doc(db, DB_COLLECTION_USERS, res.user.uid))
           .then(async (docSnap) => {
-            if (docSnap.exists()) navigate("/chat");
+            if (docSnap.exists()) navigate(ROUTE_CHAT);
             else {
               showAlert("Creating your Firechat account…", AlertType.info);
               const displayName = res.user.displayName;
               const email = res.user.email;
-              await setDoc(doc(db, "users", res.user.uid), {
+              await setDoc(doc(db, DB_COLLECTION_USERS, res.user.uid), {
                 uid: res.user.uid,
                 displayName,
                 email,
               });
-              await setDoc(doc(db, "userChats", res.user.uid), {});
-              navigate("/chat");
+              await setDoc(doc(db, DB_COLLECTION_USERCHATS, res.user.uid), {});
+              navigate(ROUTE_CHAT);
             }
           })
           .catch((error) => {
@@ -44,7 +49,7 @@ export default function Login() {
     const password = e.target[1].value;
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate("/chat");
+      navigate(ROUTE_CHAT);
     } catch (error: any) {
       handleFirebaseError(error);
     }

@@ -1,5 +1,6 @@
 import { auth } from "@/firebase";
 import { AlertType, showAlert } from "@/utils";
+import { APP_NAME, ROUTE_CHAT, ROUTE_REGISTER } from "@/utils/constants";
 import FirechatLogo from "@components/FirechatLogo";
 import Login from "@components/Login";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -19,7 +20,7 @@ export default function Landing() {
         VITE_DEMO_USER_EMAIL,
         VITE_DEMO_USER_PASSWORD
       );
-      navigate("/chat");
+      navigate(ROUTE_CHAT);
     } catch (error: any) {
       let errorMessage = error.message;
       showAlert(errorMessage, AlertType.error);
@@ -33,7 +34,7 @@ export default function Landing() {
           <div className="text-center lg:text-left">
             <div className="flex items-center gap-2">
               <FirechatLogo className="h-16 w-16" />
-              <h1 className="mb-4 text-5xl font-bold">Firechat</h1>
+              <h1 className="mb-4 text-5xl font-bold">{APP_NAME}</h1>
             </div>
             <p className="mb-2 text-2xl">
               Introducing Firechat, a modern messaging app built with ReactJS,
@@ -52,7 +53,7 @@ export default function Landing() {
               <div className="divider divider-horizontal">OR</div>
               <button
                 className="btn-secondary btn"
-                onClick={() => navigate("/register")}
+                onClick={() => navigate(ROUTE_REGISTER)}
               >
                 Sign up now
               </button>

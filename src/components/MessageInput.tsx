@@ -1,6 +1,10 @@
 // @ts-nocheck
 import { db, storage } from "@/firebase";
 import { AlertType, showAlert } from "@/utils";
+import {
+  DB_COLLECTION_CHATS,
+  DB_COLLECTION_USERCHATS,
+} from "@/utils/constants";
 import useDemoUser from "@/utils/isDemoUser";
 import { AuthContext } from "@contexts/AuthContext";
 import { ChatContext } from "@contexts/ChatContext";
@@ -46,7 +50,7 @@ export default function MessageInput() {
           () => {
             getDownloadURL(uploadTask.snapshot.ref).then(
               async (downloadURL) => {
-                await updateDoc(doc(db, "chats", data.chatId), {
+                await updateDoc(doc(db, DB_COLLECTION_CHATS, data.chatId), {
                   messages: arrayUnion({
                     id: uuid(),
                     text,
@@ -60,7 +64,7 @@ export default function MessageInput() {
           }
         );
       } else {
-        await updateDoc(doc(db, "chats", data.chatId), {
+        await updateDoc(doc(db, DB_COLLECTION_CHATS, data.chatId), {
           messages: arrayUnion({
             id: uuid(),
             text,
@@ -70,7 +74,7 @@ export default function MessageInput() {
         });
       }
 
-      await updateDoc(doc(db, "userChats", currentUser.uid), {
+      await updateDoc(doc(db, DB_COLLECTION_USERCHATS, currentUser.uid), {
         [data.chatId + ".lastMessage"]: {
           text,
           senderId: currentUser.uid,
@@ -78,7 +82,7 @@ export default function MessageInput() {
         [data.chatId + ".date"]: serverTimestamp(),
       });
 
-      await updateDoc(doc(db, "userChats", data.user.uid), {
+      await updateDoc(doc(db, DB_COLLECTION_USERCHATS, data.user.uid), {
         [data.chatId + ".lastMessage"]: {
           text,
           senderId: currentUser.uid,

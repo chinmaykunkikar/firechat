@@ -1,5 +1,10 @@
 import { db } from "@/firebase";
 import { AlertType, showAlert } from "@/utils";
+import {
+  DB_COLLECTION_CHATS,
+  DB_COLLECTION_USERCHATS,
+  DB_COLLECTION_USERS,
+} from "@/utils/constants";
 import useDemoUser from "@/utils/isDemoUser";
 import ChatContactPreview from "@components/ChatContactPreview";
 import Modal from "@components/Modal";
@@ -52,7 +57,7 @@ export default function Search() {
       showAlert("Demo users still can't search other users 😉", AlertType.info);
     } else {
       const q = query(
-        collection(db, "users"),
+        collection(db, DB_COLLECTION_USERS),
         where("displayName", ">=", searchQuery),
         where("displayName", "<=", searchQuery + "\uf8ff")
       );
@@ -78,7 +83,7 @@ export default function Search() {
         ? currentUser.uid + user.uid
         : user.uid + currentUser.uid);
     try {
-      const res = await getDoc(doc(db, "chats", combinedId));
+      const res = await getDoc(doc(db, DB_COLLECTION_CHATS, combinedId));
       if (res)
         showAlert(
           `Psst! ${user.displayName} is already present in your chats.`,
@@ -86,10 +91,12 @@ export default function Search() {
         );
 
       if (!res.exists()) {
-        await setDoc(doc(db, "chats", combinedId), { messages: [] });
+        await setDoc(doc(db, DB_COLLECTION_CHATS, combinedId), {
+          messages: [],
+        });
 
         await updateDoc(
-          doc(db, "userChats", currentUser.uid),
+          doc(db, DB_COLLECTION_USERCHATS, currentUser.uid),
           user && {
             [combinedId + ".userInfo"]: {
               uid: user.uid,
@@ -99,7 +106,7 @@ export default function Search() {
           }
         );
 
-        await updateDoc(doc(db, "userChats", user?.uid), {
+        await updateDoc(doc(db, DB_COLLECTION_USERCHATS, user?.uid), {
           [combinedId + ".userInfo"]: {
             uid: currentUser.uid,
             displayName: currentUser.displayName,

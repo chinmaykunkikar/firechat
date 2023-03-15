@@ -1,3 +1,4 @@
+import { ROUTE_CHAT, ROUTE_HOME, ROUTE_REGISTER } from "@/utils/constants";
 import { AuthContext } from "@contexts/AuthContext";
 import { lazy, Suspense, useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
@@ -12,7 +13,7 @@ export default function App() {
 
   function ProtectedRoute({ children }: any) {
     if (!currentUser) {
-      return <Navigate to="/" />;
+      return <Navigate to={ROUTE_HOME} />;
     }
     return children;
   }
@@ -22,15 +23,15 @@ export default function App() {
       <Routes>
         <Route
           index
-          path="/chat"
+          path={ROUTE_CHAT}
           element={
             <ProtectedRoute>
               <Chat />
             </ProtectedRoute>
           }
         />
-        <Route path="/" element={<Landing />} />
-        <Route path="/register" element={<Register />} />
+        <Route path={ROUTE_HOME} element={<Landing />} />
+        <Route path={ROUTE_REGISTER} element={<Register />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </Suspense>

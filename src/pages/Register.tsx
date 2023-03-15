@@ -1,5 +1,10 @@
 import { auth, db, googleProvider } from "@/firebase";
 import { AlertType, handleFirebaseError, showAlert } from "@/utils";
+import {
+  DB_COLLECTION_USERCHATS,
+  DB_COLLECTION_USERS,
+  ROUTE_HOME,
+} from "@/utils/constants";
 import FirechatLogo from "@components/FirechatLogo";
 import GoogleLogo from "@components/GoogleLogo";
 import {
@@ -25,12 +30,12 @@ export default function Register() {
         showAlert("Creating your Firechat account…", AlertType.info);
         const displayName = res.user.displayName;
         const email = res.user.email;
-        await setDoc(doc(db, "users", res.user.uid), {
+        await setDoc(doc(db, DB_COLLECTION_USERS, res.user.uid), {
           uid: res.user.uid,
           displayName,
           email,
         });
-        await setDoc(doc(db, "userChats", res.user.uid), {});
+        await setDoc(doc(db, DB_COLLECTION_USERCHATS, res.user.uid), {});
         navigate("/chat");
         setLoading(false);
       })
@@ -52,12 +57,12 @@ export default function Register() {
       await updateProfile(res.user, {
         displayName,
       });
-      await setDoc(doc(db, "users", res.user.uid), {
+      await setDoc(doc(db, DB_COLLECTION_USERS, res.user.uid), {
         uid: res.user.uid,
         displayName,
         email,
       });
-      await setDoc(doc(db, "userChats", res.user.uid), {});
+      await setDoc(doc(db, DB_COLLECTION_USERCHATS, res.user.uid), {});
       await signInWithEmailAndPassword(auth, email, password);
       navigate("/chat");
       setLoading(false);
@@ -136,7 +141,7 @@ export default function Register() {
           </form>
           <p className="mt-4 text-center">
             Already have an account?{" "}
-            <Link to="/" className="link-secondary link font-semibold">
+            <Link to={ROUTE_HOME} className="link-secondary link font-semibold">
               Login
             </Link>
           </p>

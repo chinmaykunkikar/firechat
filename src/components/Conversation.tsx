@@ -1,4 +1,5 @@
 import { db } from "@/firebase";
+import { DB_COLLECTION_CHATS } from "@/utils/constants";
 import MessageBubble from "@components/MessageBubble";
 import { ChatContext } from "@contexts/ChatContext";
 import { ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/outline";
@@ -10,9 +11,12 @@ export default function Conversation() {
   const { data }: any = useContext(ChatContext);
 
   useEffect(() => {
-    const unSub = onSnapshot(doc(db, "chats", data.chatId), (doc) => {
-      doc.exists() && setMessages(doc.data().messages);
-    });
+    const unSub = onSnapshot(
+      doc(db, DB_COLLECTION_CHATS, data.chatId),
+      (doc) => {
+        doc.exists() && setMessages(doc.data().messages);
+      }
+    );
 
     return () => {
       unSub();

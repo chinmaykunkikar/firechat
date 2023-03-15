@@ -1,4 +1,8 @@
 import { db } from "@/firebase";
+import {
+  DB_COLLECTION_CHATS,
+  DB_COLLECTION_USERCHATS,
+} from "@/utils/constants";
 import Modal from "@components/Modal";
 import { AuthContext } from "@contexts/AuthContext";
 import { ChatContext } from "@contexts/ChatContext";
@@ -16,13 +20,13 @@ export default function InfoBar() {
   async function deleteChat(e: SyntheticEvent) {
     e.preventDefault();
     setOpen(false);
-    await updateDoc(doc(db, "userChats", currentUser.uid), {
+    await updateDoc(doc(db, DB_COLLECTION_USERCHATS, currentUser.uid), {
       [data.chatId]: deleteField(),
     });
-    await updateDoc(doc(db, "userChats", data?.user.uid), {
+    await updateDoc(doc(db, DB_COLLECTION_USERCHATS, data?.user.uid), {
       [data.chatId]: deleteField(),
     });
-    await deleteDoc(doc(db, "chats", data.chatId));
+    await deleteDoc(doc(db, DB_COLLECTION_CHATS, data.chatId));
     dispatch({ type: "CHAT_DELETE" });
   }
 

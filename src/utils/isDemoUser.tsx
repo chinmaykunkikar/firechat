@@ -1,3 +1,4 @@
+import { DB_COLLECTION_USERS } from "./constants";
 import { auth, db } from "@/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
@@ -8,7 +9,7 @@ export default function useDemoUser() {
 
   async function checkDemoUser() {
     if (fireUser) {
-      await getDoc(doc(db, "users", fireUser.uid))
+      await getDoc(doc(db, DB_COLLECTION_USERS, fireUser.uid))
         .then((docSnap) => {
           if (docSnap.exists()) setDemoUser(docSnap.data().demoUser);
         })

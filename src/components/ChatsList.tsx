@@ -1,4 +1,5 @@
 import { db } from "@/firebase";
+import { DB_COLLECTION_USERCHATS } from "@/utils/constants";
 import { AuthContext } from "@contexts/AuthContext";
 import { ChatContext } from "@contexts/ChatContext";
 import { CheckIcon } from "@heroicons/react/24/outline";
@@ -15,7 +16,7 @@ export default function ChatsList() {
   useEffect(() => {
     const getChats = () => {
       const unsub = onSnapshot(
-        doc(db, "userChats", currentUser.uid),
+        doc(db, DB_COLLECTION_USERCHATS, currentUser.uid),
         (doc: any) => {
           setChats(doc.data());
         }

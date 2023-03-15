@@ -29,12 +29,14 @@ export default function Navbar() {
           </div>
         </div>
         <div className="font-semibold">{currentUser.displayName}</div>
-        <button
-          className="btn-ghost btn-square btn-sm btn gap-2"
-          onClick={handleSignOut}
-        >
-          <ArrowRightOnRectangleIcon className="h-6 w-6" />
-        </button>
+        <div className="tooltip-bottom tooltip" data-tip="Sign out">
+          <button
+            className="btn-ghost btn-square btn-sm btn gap-2"
+            onClick={handleSignOut}
+          >
+            <ArrowRightOnRectangleIcon className="h-6 w-6" />
+          </button>
+        </div>
       </div>
     </div>
   );

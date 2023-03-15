@@ -1,3 +1,4 @@
+import { getMessageDate, getMessageTime } from "@/utils";
 import { AuthContext } from "@contexts/AuthContext";
 import { ChatContext } from "@contexts/ChatContext";
 import Avvvatars from "avvvatars-react";
@@ -16,18 +17,6 @@ export default function MessageBubble({ message }: any) {
       block: "center",
     });
   }, [message]);
-
-  const getMessageTime = () => {
-    const timenum = message.date;
-    const lastMessage = new Date(
-      timenum.seconds * 1000 + timenum.nanoseconds / 10000
-    );
-    var today = new Date();
-    if (today.toLocaleDateString() === lastMessage.toLocaleDateString()) {
-      if (Number(lastMessage) >= Number(today)) return "Just Now";
-      else return lastMessage.toLocaleTimeString();
-    } else return lastMessage.toLocaleDateString();
-  };
 
   return (
     <div
@@ -48,6 +37,9 @@ export default function MessageBubble({ message }: any) {
           />
         </div>
       </div>
+      <div className="chat-header opacity-50">
+        {getMessageDate(message.date.toDate())}
+      </div>
       <div
         className={`chat-bubble ${
           message.senderId === currentUser.uid
@@ -56,8 +48,10 @@ export default function MessageBubble({ message }: any) {
         }`}
       >
         {message.text}
+        <div className="chat-footer opacity-50 font-semibold text-[10px]">
+          {getMessageTime(message.date.toDate())}
+        </div>
       </div>
-      <div className="chat-footer opacity-50">{getMessageTime()}</div>
       {message.img && (
         <img
           className="m-6 w-40 rounded border-2 border-primary-content p-4"

@@ -58,3 +58,22 @@ export function handleFirebaseError(error: any) {
     showAlert(errorMessage, AlertType.error);
   }
 }
+
+export function getMessageTime(utcDate: Date) {
+  // const utcDate = message.date.toDate();
+  return new Intl.DateTimeFormat("en-IN", {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+    hourCycle: "h12",
+  })
+    .format(utcDate)
+    .toLowerCase();
+}
+
+export function getMessageDate(utcDate: Date) {
+  return new Intl.DateTimeFormat("default", {
+    day: "2-digit",
+    month: "short",
+  }).format(utcDate);
+}

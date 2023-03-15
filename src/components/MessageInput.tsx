@@ -7,6 +7,8 @@ import {
 import useDemoUser from "@/utils/isDemoUser";
 import { AuthContext } from "@contexts/AuthContext";
 import { ChatContext } from "@contexts/ChatContext";
+import emojiData from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 import { ArrowRightIcon, PhotoIcon } from "@heroicons/react/24/outline";
 import {
   arrayUnion,
@@ -16,7 +18,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { Slide, ToastContainer } from "react-toastify";
 import { v4 as uuid } from "uuid";
 
@@ -24,10 +26,26 @@ export default function MessageInput() {
   const [text, setText] = useState<string>("");
   const [img, setImg] = useState<Blob | null>(null);
 
+  const emojiRef = useRef<any>(null);
+
   const { currentUser }: any = useContext(AuthContext);
   const { data }: any = useContext(ChatContext);
 
   const isDemoUser = useDemoUser();
+
+  const onEmojiClick = (event: any) => {
+    const cursor = emojiRef.current.selectionStart;
+    console.log(cursor);
+
+    const message = text.slice(0, cursor) + event.native + text.slice(cursor);
+    setText(message);
+
+    const newCursor = cursor + event.native.length;
+    setTimeout(
+      () => emojiRef.current.setSelectionRange(newCursor, newCursor),
+      10
+    );
+  };
 
   function handleKey(e: any) {
     e.code === "Enter" && handleSend();
@@ -93,7 +111,19 @@ export default function MessageInput() {
   return (
     <div>
       <div className="flex h-16 items-center justify-center gap-4 bg-neutral-focus px-4">
+        <div className="dropdown dropdown-top">
+          <label tabIndex={0} className="btn btn-ghost btn-circle text-2xl">
+            🙂
+          </label>
+          <ul
+            tabIndex={0}
+            className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+          >
+            <Picker data={emojiData} onEmojiSelect={onEmojiClick} />
+          </ul>
+        </div>
         <input
+          ref={emojiRef}
           type="text"
           placeholder={
             isDemoUser ? "Message input is disabled for demo users." : "Message"
@@ -119,7 +149,6 @@ export default function MessageInput() {
           />
           <PhotoIcon />
         </label>
-
         <button
           className="btn-primary btn-sm btn-circle btn basis-24 text-base-content disabled:bg-base-100"
           onClick={handleSend}

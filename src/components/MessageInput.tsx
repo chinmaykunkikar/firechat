@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { db, storage } from "@/firebase";
 import { AlertType, showAlert } from "@/utils";
 import {
@@ -44,25 +43,19 @@ export default function MessageInput() {
       if (img) {
         const storageRef = ref(storage, uuid());
         const uploadTask = uploadBytesResumable(storageRef, img);
-
-        uploadTask.on(
-          () => {},
-          () => {
-            getDownloadURL(uploadTask.snapshot.ref).then(
-              async (downloadURL) => {
-                await updateDoc(doc(db, DB_COLLECTION_CHATS, data.chatId), {
-                  messages: arrayUnion({
-                    id: uuid(),
-                    text,
-                    senderId: currentUser.uid,
-                    date: Timestamp.now(),
-                    img: downloadURL,
-                  }),
-                });
-              }
-            );
-          }
-        );
+        uploadTask.on("state_changed", () => {
+          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+            await updateDoc(doc(db, DB_COLLECTION_CHATS, data.chatId), {
+              messages: arrayUnion({
+                id: uuid(),
+                text,
+                senderId: currentUser.uid,
+                date: Timestamp.now(),
+                img: downloadURL,
+              }),
+            });
+          });
+        });
       } else {
         await updateDoc(doc(db, DB_COLLECTION_CHATS, data.chatId), {
           messages: arrayUnion({
@@ -80,6 +73,7 @@ export default function MessageInput() {
           senderId: currentUser.uid,
         },
         [data.chatId + ".date"]: serverTimestamp(),
+        [data.chatId + ".messageRead"]: true,
       });
 
       await updateDoc(doc(db, DB_COLLECTION_USERCHATS, data.user.uid), {
@@ -88,6 +82,7 @@ export default function MessageInput() {
           senderId: currentUser.uid,
         },
         [data.chatId + ".date"]: serverTimestamp(),
+        [data.chatId + ".messageRead"]: false,
       });
 
       setText("");
@@ -113,7 +108,11 @@ export default function MessageInput() {
           <input
             type="file"
             id="file"
-            onChange={(e) => setImg(e.target.files[0])}
+            onChange={(e) =>
+              setImg(
+                e.target.files instanceof FileList ? e.target.files[0] : null
+              )
+            }
             accept="image/*"
             className="hidden"
             disabled={isDemoUser}

@@ -2,13 +2,13 @@ import { db } from "@/firebase";
 import { DB_COLLECTION_USERCHATS } from "@/utils/constants";
 import { AuthContext } from "@contexts/AuthContext";
 import { ChatContext } from "@contexts/ChatContext";
-import { CheckIcon } from "@heroicons/react/24/outline";
+import { CheckIcon, EyeIcon } from "@heroicons/react/24/outline";
 import Avvvatars from "avvvatars-react";
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, DocumentData, onSnapshot, updateDoc } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 
 export default function ChatsList() {
-  const [chats, setChats] = useState([]);
+  const [chats, setChats] = useState<DocumentData>([]);
 
   const { currentUser }: any = useContext(AuthContext);
   const { dispatch }: any = useContext(ChatContext);
@@ -17,7 +17,7 @@ export default function ChatsList() {
     const getChats = () => {
       const unsub = onSnapshot(
         doc(db, DB_COLLECTION_USERCHATS, currentUser.uid),
-        (doc: any) => {
+        (doc: DocumentData) => {
           setChats(doc.data());
         }
       );
@@ -29,18 +29,23 @@ export default function ChatsList() {
     currentUser.uid && getChats();
   }, [currentUser.uid]);
 
-  const handleSelect = (
-    e: React.MouseEventHandler<HTMLDivElement> | undefined
-  ) => {
+  const handleSelect = async (e: any) => {
     dispatch({ type: "CHANGE_USER", payload: e });
+    const chatId =
+      currentUser.uid > e?.uid
+        ? currentUser.uid + e?.uid
+        : e?.uid + currentUser.uid;
+    await updateDoc(doc(db, DB_COLLECTION_USERCHATS, currentUser.uid), {
+      [chatId + ".messageRead"]: true,
+    });
   };
 
   return (
     <div className="flex cursor-default flex-col">
       <p className="ml-4 py-1 text-sm font-bold">Contacts</p>
       {Object.entries(chats)
-        ?.sort((a: any, b: any) => b[1].date - a[1].date)
-        .map((chat: any) => (
+        ?.sort((a: DocumentData, b: DocumentData) => b[1].date - a[1].date)
+        .map((chat: DocumentData) => (
           <div
             className="flex items-center gap-4 p-4 hover:cursor-pointer hover:bg-neutral active:bg-neutral-focus"
             key={chat[0]}
@@ -66,6 +71,13 @@ export default function ChatsList() {
                 </div>
               </div>
             </div>
+            {!chat[1].messageRead && (
+              <div className="grow text-end">
+                <div className="badge badge-success font-bold">
+                  <EyeIcon className="h-4 w-4" />
+                </div>
+              </div>
+            )}
           </div>
         ))}
     </div>

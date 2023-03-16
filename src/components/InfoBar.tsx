@@ -20,13 +20,13 @@ export default function InfoBar() {
   async function deleteChat(e: SyntheticEvent) {
     e.preventDefault();
     setOpen(false);
+    await deleteDoc(doc(db, DB_COLLECTION_CHATS, data?.chatId));
     await updateDoc(doc(db, DB_COLLECTION_USERCHATS, currentUser.uid), {
       [data.chatId]: deleteField(),
     });
     await updateDoc(doc(db, DB_COLLECTION_USERCHATS, data?.user.uid), {
       [data.chatId]: deleteField(),
     });
-    await deleteDoc(doc(db, DB_COLLECTION_CHATS, data.chatId));
     dispatch({ type: "CHAT_DELETE" });
   }
 

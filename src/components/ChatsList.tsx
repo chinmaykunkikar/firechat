@@ -42,7 +42,6 @@ export default function ChatsList() {
 
   return (
     <div className="flex cursor-default flex-col">
-      <p className="ml-4 py-1 text-sm font-bold">Contacts</p>
       {Object.entries(chats)
         ?.sort((a: DocumentData, b: DocumentData) => b[1].date - a[1].date)
         .map((chat: DocumentData) => (

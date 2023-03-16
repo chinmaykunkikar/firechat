@@ -9,7 +9,7 @@ import useDemoUser from "@/utils/isDemoUser";
 import ChatContactPreview from "@components/ChatContactPreview";
 import Modal from "@components/Modal";
 import { AuthContext } from "@contexts/AuthContext";
-import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { PencilSquareIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import {
   collection,
   doc,
@@ -123,12 +123,8 @@ export default function Search() {
 
   return (
     <div className="cursor-default">
-      <div
-        className="flex w-full cursor-pointer items-center gap-2 p-4 text-secondary"
-        onClick={handleToggle}
-      >
-        <MagnifyingGlassIcon className="h-6 w-6 stroke-accent stroke-[3]" />
-        <p className="text-sm font-bold">Find users to start conversations</p>
+      <div className="btn btn-circle btn-ghost" onClick={handleToggle}>
+        <PencilSquareIcon className="h-6 w-6" />
       </div>
       <Modal open={open} onClose={handleToggle}>
         <div className="mb-4 flex items-center justify-between">

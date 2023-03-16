@@ -77,3 +77,11 @@ export function getMessageDate(utcDate: Date) {
     month: "short",
   }).format(utcDate);
 }
+
+export function getJoiningDate(utcDate: Date) {
+  return new Intl.DateTimeFormat("default", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(utcDate);
+}

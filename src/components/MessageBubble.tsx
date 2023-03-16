@@ -2,28 +2,17 @@ import { getMessageDate, getMessageTime } from "@/utils";
 import { AuthContext } from "@contexts/AuthContext";
 import { ChatContext } from "@contexts/ChatContext";
 import Avvvatars from "avvvatars-react";
-import { useContext, useEffect, useRef } from "react";
+import { useContext } from "react";
 
 export default function MessageBubble({ message }: any) {
   const { currentUser }: any = useContext(AuthContext);
   const { data }: any = useContext(ChatContext);
-
-  const scrollRef = useRef<null | HTMLDivElement>(null);
-
-  useEffect(() => {
-    scrollRef.current?.scrollIntoView({
-      behavior: "smooth",
-      inline: "center",
-      block: "center",
-    });
-  }, [message]);
 
   return (
     <div
       className={`chat ${
         message.senderId === currentUser.uid ? "chat-end" : "chat-start"
       }`}
-      ref={scrollRef}
     >
       <div className="chat-image avatar">
         <div className="w-8 rounded-full">

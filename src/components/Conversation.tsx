@@ -4,11 +4,12 @@ import MessageBubble from "@components/MessageBubble";
 import { ChatContext } from "@contexts/ChatContext";
 import { ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/outline";
 import { doc, onSnapshot } from "firebase/firestore";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 export default function Conversation() {
   const [messages, setMessages] = useState([]);
   const { data }: any = useContext(ChatContext);
+  const scrollRef = useRef<null | HTMLDivElement>(null);
 
   useEffect(() => {
     const unSub = onSnapshot(
@@ -23,6 +24,12 @@ export default function Conversation() {
     };
   }, [data.chatId]);
 
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [messages]);
+
   return (
     <div className="grow overflow-y-auto p-4">
       {messages.length !== 0 ? (
@@ -35,6 +42,7 @@ export default function Conversation() {
           <p className="select-none text-lg">Strike a conversation!</p>
         </div>
       )}
+      <div ref={scrollRef} />
     </div>
   );
 }

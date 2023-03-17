@@ -1,15 +1,15 @@
+import DeleteChatModal from "./DeleteChatModal";
 import { db } from "@/firebase";
 import {
   DB_COLLECTION_CHATS,
   DB_COLLECTION_USERCHATS,
 } from "@/utils/constants";
-import Modal from "@components/Modal";
 import { AuthContext } from "@contexts/AuthContext";
 import { ChatContext } from "@contexts/ChatContext";
 import { EllipsisVerticalIcon, TrashIcon } from "@heroicons/react/24/outline";
 import Avvvatars from "avvvatars-react";
 import { deleteDoc, deleteField, doc, updateDoc } from "firebase/firestore";
-import { SyntheticEvent, useContext, useState } from "react";
+import { MouseEvent, useContext, useState } from "react";
 
 export default function InfoBar() {
   const { currentUser }: any = useContext(AuthContext);
@@ -17,7 +17,7 @@ export default function InfoBar() {
 
   const [open, setOpen] = useState<boolean>(false);
 
-  async function deleteChat(e: SyntheticEvent) {
+  async function deleteChat(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     setOpen(false);
     await deleteDoc(doc(db, DB_COLLECTION_CHATS, data?.chatId));
@@ -57,25 +57,11 @@ export default function InfoBar() {
             </li>
           </ul>
         </div>
-        <Modal open={open} onClose={handleToggle}>
-          <div className="flex items-center gap-2 text-lg font-bold">
-            <Avvvatars value={data.user.uid} style="shape" size={36} />
-            Delete this chat?
-          </div>
-          <p className="py-2">
-            <span className="font-bold">{data.user.displayName}</span>
-            &nbsp;will lose this chat too.
-          </p>
-          <p className="font-bold text-warning">This cannot be undone.</p>
-          <div className="modal-action">
-            <button className="btn-primary btn" onClick={handleToggle}>
-              Cancel
-            </button>
-            <button className="btn-outline btn-error btn" onClick={deleteChat}>
-              Delete Chat
-            </button>
-          </div>
-        </Modal>
+        <DeleteChatModal
+          open={open}
+          handleToggle={handleToggle}
+          deleteChat={deleteChat}
+        />
       </div>
     </div>
   );

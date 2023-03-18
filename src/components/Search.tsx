@@ -84,7 +84,7 @@ export default function Search() {
         : user.uid + currentUser.uid);
     try {
       const res = await getDoc(doc(db, DB_COLLECTION_CHATS, combinedId));
-      if (res)
+      if (res.data())
         showAlert(
           `Psst! ${user.displayName} is already present in your chats.`,
           AlertType.info

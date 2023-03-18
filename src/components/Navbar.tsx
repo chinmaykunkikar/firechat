@@ -1,14 +1,10 @@
-import FirechatLogo from "./FirechatLogo";
-import Modal from "./Modal";
-import Search from "./Search";
 import { auth } from "@/firebase";
-import { getJoiningDate } from "@/utils";
+import FirechatLogo from "@components/FirechatLogo";
+import ProfileModal from "@components/ProfileModal";
+import Search from "@components/Search";
 import { AuthContext } from "@contexts/AuthContext";
 import { ChatContext } from "@contexts/ChatContext";
-import {
-  ArrowRightOnRectangleIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 import Avvvatars from "avvvatars-react";
 import { signOut } from "firebase/auth";
 import { useContext, useState } from "react";
@@ -64,48 +60,14 @@ export default function Navbar() {
             </li>
             <li>
               <a onClick={handleSignOut}>
-                <ArrowRightOnRectangleIcon className="h-6 w-6" /> Sign out
+                <ArrowRightOnRectangleIcon className="h-6 w-6" />
+                &nbsp;Sign out
               </a>
             </li>
           </ul>
         </div>
       </div>
-      <Modal open={open} onClose={handleToggle}>
-        <div className="flex justify-end items-center">
-          <button
-            className="btn-sm p-1 btn-ghost btn-circle btn"
-            onClick={handleToggle}
-          >
-            <XMarkIcon className="stroke-2" />
-          </button>
-        </div>
-        <div className="flex gap-4 items-center justify-center">
-          <div className="flex flex-col gap-2 items-center">
-            <Avvvatars value={currentUser.uid} style="shape" size={72} />
-            <div className="link link-info link-hover text-xs hover:cursor-not-allowed">
-              change
-            </div>
-          </div>
-          <div className="flex-col flex gap-1 text-sm">
-            <p className="font-extrabold text-2xl">{currentUser.displayName}</p>
-            <p className="text-secondary -mt-1">{currentUser.email}</p>
-            <div>Joined {getJoiningDate(currentUser.metadata.createdAt)}</div>
-            <div className="flex items-baseline">
-              <p className="font-semibold">UID</p>
-              <p className="font-mono">&nbsp;{currentUser.uid}</p>
-            </div>
-          </div>
-        </div>
-        <div className="flex justify-center mt-4">
-          <button
-            disabled
-            className="btn-outline btn-xs btn-error btn"
-            onClick={handleToggle}
-          >
-            Delete your account
-          </button>
-        </div>
-      </Modal>
+      <ProfileModal open={open} handleToggle={handleToggle} />
     </div>
   );
 }

@@ -136,7 +136,7 @@ export default function Register() {
               onClick={signUpWithGoogle}
             >
               <GoogleLogo className="h-4 w-4" />
-              Sign up with Google
+              Continue with Google
             </button>
           </form>
           <p className="mt-4 text-center">

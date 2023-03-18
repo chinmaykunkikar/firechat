@@ -98,7 +98,7 @@ export default function Login() {
           onClick={signInWithGoogle}
         >
           <GoogleLogo className="h-4 w-4" />
-          Sign in with Google
+          Continue with Google
         </button>
         <ToastContainer
           theme="colored"

@@ -8,13 +8,14 @@ type Props = {
   handleToggle: () => void;
   deleteChat: (e: MouseEvent<HTMLButtonElement>) => void;
 };
-const { data }: any = useContext(ChatContext);
 
 export default function DeleteChatModal({
   open,
   handleToggle,
   deleteChat,
 }: Props) {
+  const { data }: any = useContext(ChatContext);
+
   return (
     <Modal open={open} onClose={handleToggle}>
       <div className="flex items-center gap-2 text-lg font-bold">

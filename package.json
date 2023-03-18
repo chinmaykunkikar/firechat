@@ -3,7 +3,7 @@
   "author": "Chinmay Kunkikar <chinmay.kunkikar@gmail.com>",
   "repository": "https://github.com/chinmaykunkikar/firechat",
   "private": true,
-  "version": "0.7.0",
+  "version": "0.7.1",
   "type": "module",
   "scripts": {
     "dev": "vite",

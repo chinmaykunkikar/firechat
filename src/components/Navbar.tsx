@@ -4,6 +4,7 @@ import ProfileModal from "@components/ProfileModal";
 import Search from "@components/Search";
 import { AuthContext } from "@contexts/AuthContext";
 import { ChatContext } from "@contexts/ChatContext";
+import { UserProfileContext } from "@contexts/UserProfileContext";
 import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 import Avvvatars from "avvvatars-react";
 import { signOut } from "firebase/auth";
@@ -12,6 +13,7 @@ import { useContext, useState } from "react";
 export default function Navbar() {
   const { currentUser }: any = useContext(AuthContext);
   const { dispatch }: any = useContext(ChatContext);
+  const { toggleIsOpen }: any = useContext(UserProfileContext);
   const [open, setOpen] = useState<boolean>(false);
 
   function handleSignOut() {
@@ -42,7 +44,7 @@ export default function Navbar() {
             <li>
               <a
                 className="font-semibold flex py-4 border-b border-neutral"
-                onClick={handleToggle}
+                onClick={() => toggleIsOpen()}
               >
                 <Avvvatars
                   value={currentUser.uid}

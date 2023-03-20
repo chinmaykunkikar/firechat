@@ -10,11 +10,10 @@ import { updateProfile } from "firebase/auth";
 import { useContext, useEffect, useState } from "react";
 
 type Props = {
-  open: boolean;
-  handleToggle: () => void;
+  handleToggle?: () => void;
 };
 
-export default function UserProfile({ open, handleToggle }: Props) {
+export default function UserProfile({ handleToggle }: Props) {
   const { currentUser }: any = useContext(AuthContext);
 
   const [picker, setPicker] = useState<boolean>(false);
@@ -72,7 +71,7 @@ export default function UserProfile({ open, handleToggle }: Props) {
   };
 
   return (
-    <div className="min-h-full">
+    <div className="h-full cursor-default">
       {picker ? (
         <div className="min-h-full flex items-center justify-center p-4 sm:px-6 lg:px-8">
           <div className="max-w-md w-full space-y-8">
@@ -131,61 +130,65 @@ export default function UserProfile({ open, handleToggle }: Props) {
           </div>
         </div>
       ) : (
-        <div className="min-h-screen flex flex-col gap-4 items-center sm:px-6 lg:px-8">
-          <div className="flex flex-col justify-center items-center pt-4 gap-2">
-            <div className="rounded-full w-48 h-48">
-              <img src={currentUser.photoURL} alt={currentUser.displayName} />
+        <div className="h-full flex flex-col gap-4 items-center justify-between sm:px-6 lg:px-8">
+          <div className="avatar_info">
+            <div className="flex flex-col justify-center items-center mt-4 gap-1">
+              <div className="rounded-full w-48 h-48">
+                <img src={currentUser.photoURL} alt={currentUser.displayName} />
+              </div>
+              <div
+                className="link link-info link-hover text-sm font-semibold"
+                onClick={() => setPicker(!picker)}
+              >
+                change avatar
+              </div>
             </div>
-            <div
-              className="link link-info link-hover text-sm font-semibold"
-              onClick={() => setPicker(!picker)}
-            >
-              change avatar
-            </div>
-          </div>
-          <div className="flex-col flex text-sm gap-1 items-center">
-            {editing ? (
-              <div className="form-control">
-                <div className="input-group">
-                  <input
-                    id="username"
-                    name="username"
-                    type="text"
-                    autoComplete="off"
-                    autoFocus
-                    required
-                    className="input w-1/2 input-sm grow text-2xl font-extrabold placeholder:text-sm placeholder:font-normal focus:outline-none input-ghost focus:select-all"
-                    placeholder="Enter a display name"
-                    defaultValue={
-                      currentUser.displayName && currentUser.displayName
-                    }
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
-                  <button type="button" onClick={handleUsernameSubmit}>
-                    <CheckIcon className="ml-2 w-6 h-6" />
-                  </button>
-                  <button type="button" onClick={() => setEditing(false)}>
-                    <XMarkIcon className="ml-2 w-6 h-6" />
+            <div className="flex-col flex text-sm gap-1 mt-4 items-center">
+              {editing ? (
+                <div className="form-control">
+                  <div className="input-group">
+                    <input
+                      id="username"
+                      name="username"
+                      type="text"
+                      autoComplete="off"
+                      autoFocus
+                      required
+                      className="input w-1/2 input-sm grow text-2xl font-extrabold placeholder:text-sm placeholder:font-normal focus:outline-none input-ghost focus:select-all"
+                      placeholder="Enter a display name"
+                      defaultValue={
+                        currentUser.displayName && currentUser.displayName
+                      }
+                      onChange={(e) => setUsername(e.target.value)}
+                    />
+                    <button type="button" onClick={handleUsernameSubmit}>
+                      <CheckIcon className="ml-2 w-6 h-6" />
+                    </button>
+                    <button type="button" onClick={() => setEditing(false)}>
+                      <XMarkIcon className="ml-2 w-6 h-6" />
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center">
+                  <p className="font-extrabold text-center w-1/2 text-2xl grow">
+                    {currentUser.displayName}
+                  </p>
+                  <button type="button" onClick={() => setEditing(true)}>
+                    <PencilIcon className="ml-4 w-6 h-6" />
                   </button>
                 </div>
-              </div>
-            ) : (
-              <div className="flex items-center">
-                <p className="font-extrabold text-center w-1/2 text-2xl grow">
-                  {currentUser.displayName}
+              )}
+              <p className="text-secondary">{currentUser.email}</p>
+              <div>Joined {getJoiningDate(currentUser.metadata.createdAt)}</div>
+              <div className="tooltip tooltip-bottom" data-tip="Your unique ID">
+                <p className="font-mono font-bold cursor-default blur-sm hover:filter-none">
+                  {currentUser.uid}
                 </p>
-                <button type="button" onClick={() => setEditing(true)}>
-                  <PencilIcon className="ml-4 w-6 h-6" />
-                </button>
               </div>
-            )}
-            <p className="text-secondary">{currentUser.email}</p>
-            <div>Joined {getJoiningDate(currentUser.metadata.createdAt)}</div>
-            <div className="tooltip tooltip-right" data-tip="Your UID">
-              <p className="font-mono font-bold cursor-default blur-sm hover:filter-none">
-                {currentUser.uid}
-              </p>
             </div>
+          </div>
+          <div className="basis-1/6">
             <button
               disabled
               className="btn-outline btn-xs btn-error btn"

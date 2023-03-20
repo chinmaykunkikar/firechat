@@ -1,6 +1,5 @@
 import { auth } from "@/firebase";
 import FirechatLogo from "@components/FirechatLogo";
-import ProfileModal from "@components/ProfileModal";
 import Search from "@components/Search";
 import { AuthContext } from "@contexts/AuthContext";
 import { ChatContext } from "@contexts/ChatContext";
@@ -69,7 +68,6 @@ export default function Navbar() {
           </ul>
         </div>
       </div>
-      <ProfileModal open={open} handleToggle={handleToggle} />
     </div>
   );
 }

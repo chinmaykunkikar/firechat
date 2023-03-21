@@ -1,4 +1,6 @@
+import { db } from "@/firebase";
 import { AlertType, generateAvatar, getJoiningDate, showAlert } from "@/utils";
+import { DB_COLLECTION_USERS } from "@/utils/constants";
 import { AuthContext } from "@contexts/AuthContext";
 import {
   ArrowPathRoundedSquareIcon,
@@ -7,6 +9,7 @@ import {
   PencilIcon,
 } from "@heroicons/react/24/solid";
 import { updateProfile } from "firebase/auth";
+import { doc, updateDoc } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 
 type Props = {
@@ -35,7 +38,7 @@ export default function UserProfile({ handleToggle }: Props) {
     fetchAvatars();
   }, []);
 
-  const handleFormSubmit = async (e: any) => {
+  const handleAvatarSubmit = async (e: any) => {
     e.preventDefault();
     if (avatarIndex !== undefined) {
       try {
@@ -44,6 +47,9 @@ export default function UserProfile({ handleToggle }: Props) {
           photoURL: avatars[avatarIndex],
         };
         await updateProfile(user, profile);
+        await updateDoc(doc(db, DB_COLLECTION_USERS, currentUser.uid), {
+          photoURL: avatars[avatarIndex],
+        });
         showAlert("Your avatar is updated", AlertType.success);
       } catch (e) {
         showAlert("Failed to update avatar", AlertType.error);
@@ -62,6 +68,9 @@ export default function UserProfile({ handleToggle }: Props) {
           displayName: username,
         };
         await updateProfile(user, profile);
+        await updateDoc(doc(db, DB_COLLECTION_USERS, currentUser.uid), {
+          displayName: username,
+        });
         showAlert(`Your display name is now ${username}`, AlertType.success);
       } catch (e) {
         showAlert("Failed to update username", AlertType.error);
@@ -97,7 +106,7 @@ export default function UserProfile({ handleToggle }: Props) {
                 <XMarkIcon className="w-6 h-6" />
               </button>
             </div>
-            <form className="space-y-6" onSubmit={handleFormSubmit}>
+            <form className="space-y-6" onSubmit={handleAvatarSubmit}>
               <div className="flex flex-wrap -m-1 md:-m-2">
                 {avatars.map((avatar, index) => (
                   <div key={index} className="flex flex-wrap w-1/3">

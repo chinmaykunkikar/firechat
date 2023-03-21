@@ -16,13 +16,17 @@ export default function MessageBubble({ message }: any) {
     >
       <div className="chat-image avatar">
         <div className="w-8 rounded-full">
-          <Avvvatars
-            value={
+          <img
+            src={
               message.senderId === currentUser.uid
-                ? currentUser.uid
-                : data.user.uid
+                ? currentUser.photoURL
+                : data.user.photoURL
             }
-            style="shape"
+            alt={
+              message.senderId === currentUser.uid
+                ? currentUser.displayName
+                : data.user.displayName
+            }
           />
         </div>
       </div>

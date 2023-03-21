@@ -20,10 +20,6 @@ export default function Navbar() {
     dispatch({ type: "USER_SIGNOUT" });
   }
 
-  function handleToggle() {
-    setOpen((prev) => !prev);
-  }
-
   return (
     <div className="flex h-16 cursor-default items-center justify-between bg-neutral-focus px-4">
       <div className="flex items-center gap-2">
@@ -32,9 +28,9 @@ export default function Navbar() {
       </div>
       <div className="flex gap-2 items-center">
         <Search />
-        <div className="dropdown dropdown-end">
-          <label tabIndex={0} className="w-8 rounded-full hover:cursor-pointer">
-            <Avvvatars value={currentUser.uid} style="shape" size={36} />
+        <div className="dropdown dropdown-end w-8">
+          <label tabIndex={0} className="rounded-full hover:cursor-pointer">
+            <img src={currentUser.photoURL} alt={currentUser.displayName} />
           </label>
           <ul
             tabIndex={0}
@@ -45,14 +41,12 @@ export default function Navbar() {
                 className="font-semibold flex py-4 border-b border-neutral"
                 onClick={() => toggleIsOpen()}
               >
-                <Avvvatars
-                  value={currentUser.uid}
-                  style="shape"
-                  border
-                  borderSize={2}
-                  borderColor="#ff5040"
-                  size={24}
-                />
+                <div className="rounded-full w-6 h-6">
+                  <img
+                    src={currentUser.photoURL}
+                    alt={currentUser.displayName}
+                  />
+                </div>
                 <div className="flex flex-col">
                   <p>{currentUser.displayName}</p>
                   <p className="text-secondary text-xs">{currentUser.email}</p>

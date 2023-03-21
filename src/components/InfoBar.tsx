@@ -38,7 +38,9 @@ export default function InfoBar() {
     <div>
       <div className="flex h-16 select-none items-center justify-between bg-secondary-focus px-6">
         <div className="flex items-center gap-4">
-          <Avvvatars value={data?.user.uid} style="shape" />
+          <div className="rounded-full">
+            <img src={data?.user.photoURL} alt={data?.user.displayName} />
+          </div>
           <div className="text-lg font-semibold">{data?.user.displayName}</div>
         </div>
         <div className="dropdown-end dropdown">

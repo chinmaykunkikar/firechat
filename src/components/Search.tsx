@@ -58,8 +58,8 @@ export default function Search() {
     } else {
       const q = query(
         collection(db, DB_COLLECTION_USERS),
-        where("displayName", ">=", searchQuery),
-        where("displayName", "<=", searchQuery + "\uf8ff")
+        where("email", ">=", searchQuery),
+        where("email", "<=", searchQuery + "\uf8ff")
       );
 
       try {
@@ -71,6 +71,7 @@ export default function Search() {
           setNoUsers(true);
         setUsers(queryData);
       } catch (error) {
+        console.log(error);
         setError(true);
       }
     }
@@ -101,6 +102,7 @@ export default function Search() {
             [combinedId + ".userInfo"]: {
               uid: user.uid,
               displayName: user.displayName,
+              photoURL: user.photoURL,
             },
             [combinedId + ".date"]: serverTimestamp(),
           }
@@ -110,12 +112,14 @@ export default function Search() {
           [combinedId + ".userInfo"]: {
             uid: currentUser.uid,
             displayName: currentUser.displayName,
+            photoURL: currentUser.photoURL,
           },
           [combinedId + ".date"]: serverTimestamp(),
         });
       }
     } catch (error) {
       setError(true);
+      console.log(error);
     }
     setQuery("");
     setOpen(false);

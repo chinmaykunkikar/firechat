@@ -1,6 +1,5 @@
 import Modal from "@components/Modal";
 import { ChatContext } from "@contexts/ChatContext";
-import Avvvatars from "avvvatars-react";
 import { MouseEvent, useContext } from "react";
 
 type Props = {

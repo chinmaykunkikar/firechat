@@ -7,7 +7,6 @@ import {
 import { AuthContext } from "@contexts/AuthContext";
 import { ChatContext } from "@contexts/ChatContext";
 import { EllipsisVerticalIcon, TrashIcon } from "@heroicons/react/24/outline";
-import Avvvatars from "avvvatars-react";
 import { deleteDoc, deleteField, doc, updateDoc } from "firebase/firestore";
 import { MouseEvent, useContext, useState } from "react";
 

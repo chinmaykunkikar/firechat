@@ -44,44 +44,40 @@ export default function ChatsList() {
     <div className="flex cursor-default flex-col">
       {Object.entries(chats)
         ?.sort((a: DocumentData, b: DocumentData) => b[1].date - a[1].date)
-        .map((chat: DocumentData) => {
-          console.log(chat);
-
-          return (
-            <div
-              className="flex items-center gap-4 p-4 hover:cursor-pointer hover:bg-neutral active:bg-neutral-focus"
-              key={chat[0]}
-              onClick={() => handleSelect(chat[1].userInfo)}
-            >
-              <div className="w-12 rounded-full">
-                <img
-                  src={chat[1].userInfo?.photoURL}
-                  alt={chat[1].userInfo?.displayName}
-                />
-              </div>
-              <div className="flex flex-col">
-                <div className="font-semibold">
-                  {chat[1].userInfo?.displayName}
-                </div>
-                <div className="flex items-center gap-1">
-                  {chat[1].lastMessage?.senderId === currentUser.uid && (
-                    <CheckIcon className="h-4 w-4 stroke-info stroke-[3]" />
-                  )}
-                  <div className="text-neutral-content">
-                    {chat[1].lastMessage?.text}
-                  </div>
-                </div>
-              </div>
-              {!chat[1].messageRead && (
-                <div className="grow text-end">
-                  <div className="badge badge-success font-bold">
-                    <EyeIcon className="h-4 w-4" />
-                  </div>
-                </div>
-              )}
+        .map((chat: DocumentData) => (
+          <div
+            className="flex items-center gap-4 p-4 hover:cursor-pointer hover:bg-neutral active:bg-neutral-focus"
+            key={chat[0]}
+            onClick={() => handleSelect(chat[1].userInfo)}
+          >
+            <div className="w-12 rounded-full">
+              <img
+                src={chat[1].userInfo?.photoURL}
+                alt={chat[1].userInfo?.displayName}
+              />
             </div>
-          );
-        })}
+            <div className="flex flex-col">
+              <div className="font-semibold">
+                {chat[1].userInfo?.displayName}
+              </div>
+              <div className="flex items-center gap-1">
+                {chat[1].lastMessage?.senderId === currentUser.uid && (
+                  <CheckIcon className="h-4 w-4 stroke-info stroke-[3]" />
+                )}
+                <div className="text-neutral-content">
+                  {chat[1].lastMessage?.text}
+                </div>
+              </div>
+            </div>
+            {!chat[1].messageRead && (
+              <div className="grow text-end">
+                <div className="badge badge-success font-bold">
+                  <EyeIcon className="h-4 w-4" />
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
     </div>
   );
 }

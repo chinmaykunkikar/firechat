@@ -35,7 +35,6 @@ export default function MessageInput() {
 
   const onEmojiClick = (event: any) => {
     const cursor = emojiRef.current.selectionStart;
-    console.log(cursor);
 
     const message = text.slice(0, cursor) + event.native + text.slice(cursor);
     setText(message);

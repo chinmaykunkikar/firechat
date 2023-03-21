@@ -37,7 +37,7 @@ export default function MessageBubble({ message }: any) {
         className={`chat-bubble ${
           message.senderId === currentUser.uid
             ? "chat-bubble-primary"
-            : "chat-bubble-accent"
+            : "chat-bubble-secondary"
         }`}
       >
         {message.text}

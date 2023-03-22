@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React, { useRef } from "react";
+import { useRef } from "react";
 
 type Props = {
   children: React.ReactNode;
@@ -7,7 +7,7 @@ type Props = {
   onClose(): void;
 };
 
-const Modal = ({ children, open, onClose }: Props) => {
+export default function Modal({ children, open, onClose }: Props) {
   const ref = useRef(null);
 
   const modalClass = cn({
@@ -21,6 +21,4 @@ const Modal = ({ children, open, onClose }: Props) => {
       </div>
     </div>
   );
-};
-
-export default Modal;
+}

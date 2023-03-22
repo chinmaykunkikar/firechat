@@ -4,7 +4,7 @@ import { createContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext({});
 
-export const AuthContextProvider = ({ children }: any) => {
+export function AuthContextProvider({ children }: any) {
   const [currentUser, setCurrentUser] = useState<any>({});
 
   useEffect(() => {
@@ -22,4 +22,4 @@ export const AuthContextProvider = ({ children }: any) => {
       {children}
     </AuthContext.Provider>
   );
-};
+}

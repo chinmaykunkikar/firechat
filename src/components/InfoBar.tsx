@@ -1,9 +1,9 @@
-import DeleteChatModal from "./DeleteChatModal";
 import { db } from "@/firebase";
 import {
   DB_COLLECTION_CHATS,
   DB_COLLECTION_USERCHATS,
 } from "@/utils/constants";
+import DeleteChatModal from "@components/DeleteChatModal";
 import { AuthContext } from "@contexts/AuthContext";
 import { ChatContext } from "@contexts/ChatContext";
 import { EllipsisVerticalIcon, TrashIcon } from "@heroicons/react/24/outline";

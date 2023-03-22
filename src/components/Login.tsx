@@ -43,7 +43,7 @@ export default function Login() {
       });
   }
 
-  const handleSubmit = async (e: any) => {
+  async function handleSubmit(e: any) {
     e.preventDefault();
     const email = e.target[0].value;
     const password = e.target[1].value;
@@ -53,7 +53,7 @@ export default function Login() {
     } catch (error: any) {
       handleFirebaseError(error);
     }
-  };
+  }
 
   return (
     <div className="card w-full max-w-sm flex-shrink-0 bg-base-100 shadow-2xl">

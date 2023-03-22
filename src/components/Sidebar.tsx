@@ -1,6 +1,6 @@
-import UserProfile from "./UserProfile";
 import ChatsList from "@components/ChatsList";
 import Navbar from "@components/Navbar";
+import UserProfile from "@components/UserProfile";
 import { UserProfileContext } from "@contexts/UserProfileContext";
 import { useContext } from "react";
 

@@ -33,18 +33,16 @@ export default function MessageInput() {
 
   const isDemoUser = useDemoUser();
 
-  const onEmojiClick = (event: any) => {
+  function onEmojiClick(event: any) {
     const cursor = emojiRef.current.selectionStart;
-
     const message = text.slice(0, cursor) + event.native + text.slice(cursor);
     setText(message);
-
     const newCursor = cursor + event.native.length;
     setTimeout(
       () => emojiRef.current.setSelectionRange(newCursor, newCursor),
       10
     );
-  };
+  }
 
   function handleKey(e: any) {
     e.code === "Enter" && handleSend();

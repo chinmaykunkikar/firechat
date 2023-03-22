@@ -2,7 +2,7 @@ import { createContext, useReducer } from "react";
 
 export const UserProfileContext = createContext({});
 
-export const UserProfileContextProvider = ({ children }: any) => {
+export function UserProfileContextProvider({ children }: any) {
   const [isOpen, toggleIsOpen] = useReducer((state) => {
     return !state;
   }, false);
@@ -12,4 +12,4 @@ export const UserProfileContextProvider = ({ children }: any) => {
       {children}
     </UserProfileContext.Provider>
   );
-};
+}

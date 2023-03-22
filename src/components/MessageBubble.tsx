@@ -1,7 +1,6 @@
 import { getMessageDate, getMessageTime } from "@/utils";
 import { AuthContext } from "@contexts/AuthContext";
 import { ChatContext } from "@contexts/ChatContext";
-import Avvvatars from "avvvatars-react";
 import { useContext } from "react";
 
 export default function MessageBubble({ message }: any) {

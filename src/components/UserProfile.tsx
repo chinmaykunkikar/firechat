@@ -28,17 +28,18 @@ export default function UserProfile({ handleToggle }: Props) {
   function classNames(...classes: any) {
     return classes.filter(Boolean).join(" ");
   }
-  const fetchAvatars = () => {
+
+  async function fetchAvatars() {
     const res = generateAvatar();
     setAvatars(res);
     setAvatarIndex(undefined);
-  };
+  }
 
   useEffect(() => {
     fetchAvatars();
   }, []);
 
-  const handleAvatarSubmit = async (e: any) => {
+  async function handleAvatarSubmit(e: any) {
     e.preventDefault();
     if (avatarIndex !== undefined) {
       try {
@@ -56,9 +57,9 @@ export default function UserProfile({ handleToggle }: Props) {
       }
     }
     setPicker(!picker);
-  };
+  }
 
-  const handleUsernameSubmit = async (e: any) => {
+  async function handleUsernameSubmit(e: any) {
     e.preventDefault();
     setEditing(false);
     if (username !== "") {
@@ -77,7 +78,7 @@ export default function UserProfile({ handleToggle }: Props) {
       }
     }
     showAlert("Username cannot be empty", AlertType.error);
-  };
+  }
 
   return (
     <div className="h-full cursor-default">

@@ -3,7 +3,7 @@ import { createContext, useContext, useReducer } from "react";
 
 export const ChatContext = createContext({});
 
-export const ChatContextProvider = ({ children }: any) => {
+export function ChatContextProvider({ children }: any) {
   const { currentUser }: any = useContext(AuthContext);
   const INITIAL_STATE = {
     chatId: null,
@@ -36,4 +36,4 @@ export const ChatContextProvider = ({ children }: any) => {
       {children}
     </ChatContext.Provider>
   );
-};
+}

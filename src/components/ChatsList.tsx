@@ -3,7 +3,6 @@ import { DB_COLLECTION_USERCHATS } from "@/utils/constants";
 import { AuthContext } from "@contexts/AuthContext";
 import { ChatContext } from "@contexts/ChatContext";
 import { CheckIcon, EyeIcon } from "@heroicons/react/24/outline";
-import Avvvatars from "avvvatars-react";
 import { doc, DocumentData, onSnapshot, updateDoc } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 
@@ -14,7 +13,7 @@ export default function ChatsList() {
   const { dispatch }: any = useContext(ChatContext);
 
   useEffect(() => {
-    const getChats = () => {
+    function getChats() {
       const unsub = onSnapshot(
         doc(db, DB_COLLECTION_USERCHATS, currentUser.uid),
         (doc: DocumentData) => {
@@ -25,11 +24,11 @@ export default function ChatsList() {
       return () => {
         unsub();
       };
-    };
+    }
     currentUser.uid && getChats();
   }, [currentUser.uid]);
 
-  const handleSelect = async (e: any) => {
+  async function handleSelect(e: any) {
     dispatch({ type: "CHANGE_USER", payload: e });
     const chatId =
       currentUser.uid > e?.uid
@@ -38,7 +37,7 @@ export default function ChatsList() {
     await updateDoc(doc(db, DB_COLLECTION_USERCHATS, currentUser.uid), {
       [chatId + ".messageRead"]: true,
     });
-  };
+  }
 
   return (
     <div className="flex cursor-default flex-col">

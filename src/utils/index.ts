@@ -60,7 +60,6 @@ export function handleFirebaseError(error: any) {
 }
 
 export function getMessageTime(utcDate: Date) {
-  // const utcDate = message.date.toDate();
   return new Intl.DateTimeFormat("en-IN", {
     hour: "numeric",
     minute: "numeric",
@@ -86,7 +85,7 @@ export function getJoiningDate(utcDate: Date) {
   }).format(utcDate);
 }
 
-export const generateAvatar = () => {
+export function generateAvatar() {
   const generateDiceBearAvataaars = (seed: any) =>
     `https://avatars.dicebear.com/api/avataaars/${seed}.svg`;
 
@@ -111,4 +110,4 @@ export const generateAvatar = () => {
     data.push(res);
   }
   return data;
-};
+}

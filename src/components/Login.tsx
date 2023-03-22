@@ -1,13 +1,10 @@
 import { auth, db, googleProvider } from "@/firebase";
 import { AlertType, handleFirebaseError, showAlert } from "@/utils";
-import {
-  DB_COLLECTION_USERCHATS,
-  DB_COLLECTION_USERS,
-  ROUTE_CHAT,
-} from "@/utils/constants";
+import { DB_COLLECTION_USERS, ROUTE_CHAT } from "@/utils/constants";
+import { createUserDocs } from "@/utils/firebaseFns";
 import GoogleLogo from "@components/GoogleLogo";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -23,14 +20,8 @@ export default function Login() {
             if (docSnap.exists()) navigate(ROUTE_CHAT);
             else {
               showAlert("Creating your Firechat account…", AlertType.info);
-              const displayName = res.user.displayName;
-              const email = res.user.email;
-              await setDoc(doc(db, DB_COLLECTION_USERS, res.user.uid), {
-                uid: res.user.uid,
-                displayName,
-                email,
-              });
-              await setDoc(doc(db, DB_COLLECTION_USERCHATS, res.user.uid), {});
+              const { displayName, email, uid } = res.user;
+              createUserDocs({ uid, displayName, email });
               navigate(ROUTE_CHAT);
             }
           })

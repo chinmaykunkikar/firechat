@@ -11,11 +11,10 @@ import { doc, updateDoc } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 
 type AvatarPickerProps = {
-  picker: boolean;
-  setPicker: React.Dispatch<React.SetStateAction<boolean>>;
+  setPicker?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function AvatarPicker({ picker, setPicker }: AvatarPickerProps) {
+export default function AvatarPicker({ setPicker }: AvatarPickerProps) {
   const { currentUser }: any = useContext(AuthContext);
 
   const [avatars, setAvatars] = useState<string[]>([]);
@@ -48,11 +47,11 @@ export default function AvatarPicker({ picker, setPicker }: AvatarPickerProps) {
           photoURL: avatars[avatarIndex],
         });
         showAlert("Your avatar is updated", AlertType.success);
-      } catch (e) {
+      } catch (e: any) {
         showAlert("Failed to update avatar", AlertType.error);
       }
     }
-    setPicker(!picker);
+    setPicker && setPicker(false);
   }
 
   return (
@@ -70,12 +69,14 @@ export default function AvatarPicker({ picker, setPicker }: AvatarPickerProps) {
               <ArrowPathRoundedSquareIcon className="w-6 h-6" />
             </button>
           </div>
-          <button
-            className="btn btn-ghost btn-circle btn-sm"
-            onClick={() => setPicker(false)}
-          >
-            <XMarkIcon className="w-6 h-6" />
-          </button>
+          {setPicker && (
+            <button
+              className="btn btn-ghost btn-circle btn-sm"
+              onClick={() => setPicker(false)}
+            >
+              <XMarkIcon className="w-6 h-6" />
+            </button>
+          )}
         </div>
         <form className="space-y-6" onSubmit={handleAvatarSubmit}>
           <div className="flex flex-wrap -m-1 md:-m-2">

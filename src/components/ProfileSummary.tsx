@@ -8,14 +8,10 @@ import { doc, updateDoc } from "firebase/firestore";
 import { useContext, useState } from "react";
 
 type ProfileSummaryProps = {
-  picker: boolean;
   setPicker: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function ProfileSummary({
-  picker,
-  setPicker,
-}: ProfileSummaryProps) {
+export default function ProfileSummary({ setPicker }: ProfileSummaryProps) {
   const { currentUser }: any = useContext(AuthContext);
 
   const [username, setUsername] = useState<string>("");
@@ -53,7 +49,7 @@ export default function ProfileSummary({
             </div>
             <div
               className="link link-info link-hover text-sm font-semibold"
-              onClick={() => setPicker(!picker)}
+              onClick={() => setPicker(true)}
             >
               change avatar
             </div>

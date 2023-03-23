@@ -12,7 +12,7 @@ export default function UserProfile() {
   return (
     <div className="h-full cursor-default">
       {picker ? (
-        <AvatarPicker picker={picker} setPicker={setPicker} />
+        <AvatarPicker setPicker={setPicker} />
       ) : (
         <>
           <button
@@ -21,7 +21,7 @@ export default function UserProfile() {
           >
             <ArrowLeftIcon className="w-6 h-6" />
           </button>
-          <ProfileSummary picker={picker} setPicker={setPicker} />
+          <ProfileSummary setPicker={setPicker} />
         </>
       )}
     </div>

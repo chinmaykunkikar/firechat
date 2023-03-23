@@ -1,10 +1,7 @@
-import { auth, db, googleProvider } from "@/firebase";
+import { auth, googleProvider } from "@/firebase";
 import { AlertType, handleFirebaseError, showAlert } from "@/utils";
-import {
-  DB_COLLECTION_USERCHATS,
-  DB_COLLECTION_USERS,
-  ROUTE_HOME,
-} from "@/utils/constants";
+import { ROUTE_CHAT, ROUTE_HOME } from "@/utils/constants";
+import { createUserDocs } from "@/utils/firebaseFns";
 import FirechatLogo from "@components/FirechatLogo";
 import GoogleLogo from "@components/GoogleLogo";
 import {
@@ -13,7 +10,6 @@ import {
   signInWithPopup,
   updateProfile,
 } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, Slide } from "react-toastify";
@@ -28,15 +24,9 @@ export default function Register() {
     signInWithPopup(auth, googleProvider)
       .then(async (res) => {
         showAlert("Creating your Firechat account…", AlertType.info);
-        const displayName = res.user.displayName;
-        const email = res.user.email;
-        await setDoc(doc(db, DB_COLLECTION_USERS, res.user.uid), {
-          uid: res.user.uid,
-          displayName,
-          email,
-        });
-        await setDoc(doc(db, DB_COLLECTION_USERCHATS, res.user.uid), {});
-        navigate("/chat");
+        const { displayName, email, uid } = res.user;
+        createUserDocs({ uid, displayName, email });
+        navigate(ROUTE_CHAT);
         setLoading(false);
       })
       .catch((error) => {
@@ -57,14 +47,10 @@ export default function Register() {
       await updateProfile(res.user, {
         displayName,
       });
-      await setDoc(doc(db, DB_COLLECTION_USERS, res.user.uid), {
-        uid: res.user.uid,
-        displayName,
-        email,
-      });
-      await setDoc(doc(db, DB_COLLECTION_USERCHATS, res.user.uid), {});
+      const { uid } = res.user;
+      createUserDocs({ uid, displayName, email });
       await signInWithEmailAndPassword(auth, email, password);
-      navigate("/chat");
+      navigate(ROUTE_CHAT);
       setLoading(false);
     } catch (error: any) {
       handleFirebaseError(error);
@@ -136,7 +122,7 @@ export default function Register() {
               onClick={signUpWithGoogle}
             >
               <GoogleLogo className="h-4 w-4" />
-              Sign up with Google
+              Continue with Google
             </button>
           </form>
           <p className="mt-4 text-center">

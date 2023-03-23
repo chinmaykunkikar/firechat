@@ -1,13 +1,12 @@
-import DeleteChatModal from "./DeleteChatModal";
 import { db } from "@/firebase";
 import {
   DB_COLLECTION_CHATS,
   DB_COLLECTION_USERCHATS,
 } from "@/utils/constants";
+import DeleteChatModal from "@components/DeleteChatModal";
 import { AuthContext } from "@contexts/AuthContext";
 import { ChatContext } from "@contexts/ChatContext";
 import { EllipsisVerticalIcon, TrashIcon } from "@heroicons/react/24/outline";
-import Avvvatars from "avvvatars-react";
 import { deleteDoc, deleteField, doc, updateDoc } from "firebase/firestore";
 import { MouseEvent, useContext, useState } from "react";
 
@@ -38,7 +37,9 @@ export default function InfoBar() {
     <div>
       <div className="flex h-16 select-none items-center justify-between bg-secondary-focus px-6">
         <div className="flex items-center gap-4">
-          <Avvvatars value={data?.user.uid} style="shape" />
+          <div className="rounded-full">
+            <img src={data?.user.photoURL} alt={data?.user.displayName} />
+          </div>
           <div className="text-lg font-semibold">{data?.user.displayName}</div>
         </div>
         <div className="dropdown-end dropdown">

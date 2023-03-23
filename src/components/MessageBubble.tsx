@@ -1,7 +1,6 @@
 import { getMessageDate, getMessageTime } from "@/utils";
 import { AuthContext } from "@contexts/AuthContext";
 import { ChatContext } from "@contexts/ChatContext";
-import Avvvatars from "avvvatars-react";
 import { useContext } from "react";
 
 export default function MessageBubble({ message }: any) {
@@ -16,13 +15,17 @@ export default function MessageBubble({ message }: any) {
     >
       <div className="chat-image avatar">
         <div className="w-8 rounded-full">
-          <Avvvatars
-            value={
+          <img
+            src={
               message.senderId === currentUser.uid
-                ? currentUser.uid
-                : data.user.uid
+                ? currentUser.photoURL
+                : data.user.photoURL
             }
-            style="shape"
+            alt={
+              message.senderId === currentUser.uid
+                ? currentUser.displayName
+                : data.user.displayName
+            }
           />
         </div>
       </div>
@@ -33,7 +36,7 @@ export default function MessageBubble({ message }: any) {
         className={`chat-bubble ${
           message.senderId === currentUser.uid
             ? "chat-bubble-primary"
-            : "chat-bubble-accent"
+            : "chat-bubble-secondary"
         }`}
       >
         {message.text}

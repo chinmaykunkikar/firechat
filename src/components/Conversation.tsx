@@ -27,6 +27,8 @@ export default function Conversation() {
   useEffect(() => {
     scrollRef.current?.scrollIntoView({
       behavior: "smooth",
+      block: "nearest",
+      inline: "nearest",
     });
   }, [messages]);
 

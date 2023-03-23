@@ -1,13 +1,10 @@
 import { auth, db, googleProvider } from "@/firebase";
 import { AlertType, handleFirebaseError, showAlert } from "@/utils";
-import {
-  DB_COLLECTION_USERCHATS,
-  DB_COLLECTION_USERS,
-  ROUTE_CHAT,
-} from "@/utils/constants";
+import { DB_COLLECTION_USERS, ROUTE_CHAT } from "@/utils/constants";
+import { createUserDocs } from "@/utils/firebaseFns";
 import GoogleLogo from "@components/GoogleLogo";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -23,14 +20,8 @@ export default function Login() {
             if (docSnap.exists()) navigate(ROUTE_CHAT);
             else {
               showAlert("Creating your Firechat account…", AlertType.info);
-              const displayName = res.user.displayName;
-              const email = res.user.email;
-              await setDoc(doc(db, DB_COLLECTION_USERS, res.user.uid), {
-                uid: res.user.uid,
-                displayName,
-                email,
-              });
-              await setDoc(doc(db, DB_COLLECTION_USERCHATS, res.user.uid), {});
+              const { displayName, email, uid } = res.user;
+              createUserDocs({ uid, displayName, email });
               navigate(ROUTE_CHAT);
             }
           })
@@ -43,7 +34,7 @@ export default function Login() {
       });
   }
 
-  const handleSubmit = async (e: any) => {
+  async function handleSubmit(e: any) {
     e.preventDefault();
     const email = e.target[0].value;
     const password = e.target[1].value;
@@ -53,7 +44,7 @@ export default function Login() {
     } catch (error: any) {
       handleFirebaseError(error);
     }
-  };
+  }
 
   return (
     <div className="card w-full max-w-sm flex-shrink-0 bg-base-100 shadow-2xl">
@@ -98,7 +89,7 @@ export default function Login() {
           onClick={signInWithGoogle}
         >
           <GoogleLogo className="h-4 w-4" />
-          Sign in with Google
+          Continue with Google
         </button>
         <ToastContainer
           theme="colored"

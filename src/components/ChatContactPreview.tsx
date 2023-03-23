@@ -1,4 +1,3 @@
-import Avvvatars from "avvvatars-react";
 import { DocumentData } from "firebase/firestore";
 
 type ChatContactPreviewProps = {
@@ -16,7 +15,7 @@ export default function ChatContactPreview({
       onClick={() => handleSearchSelect(user)}
     >
       <div className="w-12 rounded-full">
-        <Avvvatars value={user?.uid} style="shape" size={48} />
+        <img src={user.photoURL} alt={user.displayName} />
       </div>
       <div className="flex flex-col">
         <div className="font-semibold">{user?.displayName}</div>

@@ -1,26 +1,21 @@
 import { auth } from "@/firebase";
 import FirechatLogo from "@components/FirechatLogo";
-import ProfileModal from "@components/ProfileModal";
 import Search from "@components/Search";
 import { AuthContext } from "@contexts/AuthContext";
 import { ChatContext } from "@contexts/ChatContext";
+import { UserProfileContext } from "@contexts/UserProfileContext";
 import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
-import Avvvatars from "avvvatars-react";
 import { signOut } from "firebase/auth";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 
 export default function Navbar() {
   const { currentUser }: any = useContext(AuthContext);
   const { dispatch }: any = useContext(ChatContext);
-  const [open, setOpen] = useState<boolean>(false);
+  const { toggleIsOpen }: any = useContext(UserProfileContext);
 
   function handleSignOut() {
     signOut(auth);
     dispatch({ type: "USER_SIGNOUT" });
-  }
-
-  function handleToggle() {
-    setOpen((prev) => !prev);
   }
 
   return (
@@ -31,9 +26,9 @@ export default function Navbar() {
       </div>
       <div className="flex gap-2 items-center">
         <Search />
-        <div className="dropdown dropdown-end">
-          <label tabIndex={0} className="w-8 rounded-full hover:cursor-pointer">
-            <Avvvatars value={currentUser.uid} style="shape" size={36} />
+        <div className="dropdown dropdown-end w-8">
+          <label tabIndex={0} className="rounded-full hover:cursor-pointer">
+            <img src={currentUser.photoURL} alt={currentUser.displayName} />
           </label>
           <ul
             tabIndex={0}
@@ -42,16 +37,14 @@ export default function Navbar() {
             <li>
               <a
                 className="font-semibold flex py-4 border-b border-neutral"
-                onClick={handleToggle}
+                onClick={() => toggleIsOpen()}
               >
-                <Avvvatars
-                  value={currentUser.uid}
-                  style="shape"
-                  border
-                  borderSize={2}
-                  borderColor="#ff5040"
-                  size={24}
-                />
+                <div className="rounded-full w-6 h-6">
+                  <img
+                    src={currentUser.photoURL}
+                    alt={currentUser.displayName}
+                  />
+                </div>
                 <div className="flex flex-col">
                   <p>{currentUser.displayName}</p>
                   <p className="text-secondary text-xs">{currentUser.email}</p>
@@ -67,7 +60,6 @@ export default function Navbar() {
           </ul>
         </div>
       </div>
-      <ProfileModal open={open} handleToggle={handleToggle} />
     </div>
   );
 }

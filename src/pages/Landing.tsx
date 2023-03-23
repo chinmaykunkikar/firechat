@@ -12,7 +12,7 @@ export default function Landing() {
 
   const { VITE_DEMO_USER_EMAIL, VITE_DEMO_USER_PASSWORD } = import.meta.env;
 
-  const handleDemo = async (e: any) => {
+  async function handleDemo(e: any) {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(
@@ -25,7 +25,7 @@ export default function Landing() {
       let errorMessage = error.message;
       showAlert(errorMessage, AlertType.error);
     }
-  };
+  }
 
   return (
     <div className="cursor-default bg-base-300">

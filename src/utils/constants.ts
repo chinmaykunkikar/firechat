@@ -4,6 +4,7 @@ const DB_COLLECTION_USERCHATS = "userChats";
 const DB_COLLECTION_USERS = "users";
 const ROUTE_CHAT = "/chat";
 const ROUTE_HOME = "/";
+const ROUTE_ONBOARDING = "/onboarding";
 const ROUTE_REGISTER = "/register";
 
 export {
@@ -13,5 +14,6 @@ export {
   DB_COLLECTION_USERS,
   ROUTE_CHAT,
   ROUTE_HOME,
+  ROUTE_ONBOARDING,
   ROUTE_REGISTER,
 };

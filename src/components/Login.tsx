@@ -1,6 +1,10 @@
 import { auth, db, googleProvider } from "@/firebase";
 import { AlertType, handleFirebaseError, showAlert } from "@/utils";
-import { DB_COLLECTION_USERS, ROUTE_ONBOARDING } from "@/utils/constants";
+import {
+  DB_COLLECTION_USERS,
+  ROUTE_CHAT,
+  ROUTE_ONBOARDING,
+} from "@/utils/constants";
 import { createUserDocs } from "@/utils/firebaseFns";
 import GoogleLogo from "@components/GoogleLogo";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
@@ -17,7 +21,7 @@ export default function Login() {
       .then((res) => {
         getDoc(doc(db, DB_COLLECTION_USERS, res.user.uid))
           .then(async (docSnap) => {
-            if (docSnap.exists()) navigate(ROUTE_ONBOARDING);
+            if (docSnap.exists()) navigate(ROUTE_CHAT);
             else {
               showAlert("Creating your Firechat account…", AlertType.info);
               const { displayName, email, uid } = res.user;
@@ -40,7 +44,7 @@ export default function Login() {
     const password = e.target[1].value;
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate(ROUTE_ONBOARDING);
+      navigate(ROUTE_CHAT);
     } catch (error: any) {
       handleFirebaseError(error);
     }

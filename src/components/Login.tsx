@@ -65,7 +65,7 @@ export default function Login() {
             </label>
             <input
               type="text"
-              placeholder="e.g. sharmaamit@elite.club"
+              placeholder="e.g. alberteinstein@elite.club"
               autoComplete="email"
               className="input-bordered input w-full max-w-xs"
               required

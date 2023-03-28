@@ -79,7 +79,7 @@ export default function Register() {
               </label>
               <input
                 type="text"
-                placeholder="e.g. Amit Sharma"
+                placeholder="e.g. Albert Einstein"
                 autoComplete="name"
                 className="input-bordered input w-full max-w-xs"
                 required
@@ -91,7 +91,7 @@ export default function Register() {
               </label>
               <input
                 type="text"
-                placeholder="e.g. sharmaamit@elite.club"
+                placeholder="e.g. alberteinstein@elite.club"
                 autoComplete="email"
                 className="input-bordered input w-full max-w-xs"
                 required

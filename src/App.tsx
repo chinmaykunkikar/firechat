@@ -1,11 +1,17 @@
-import { ROUTE_CHAT, ROUTE_HOME, ROUTE_REGISTER } from "@/utils/constants";
+import {
+  ROUTE_CHAT,
+  ROUTE_HOME,
+  ROUTE_ONBOARDING,
+  ROUTE_REGISTER,
+} from "@/utils/constants";
 import { AuthContext } from "@contexts/AuthContext";
 import { lazy, Suspense, useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 
+const Chat = lazy(() => import("@pages/Chat"));
 const Landing = lazy(() => import("@pages/Landing"));
 const Register = lazy(() => import("@pages/Register"));
-const Chat = lazy(() => import("@pages/Chat"));
+const Onboarding = lazy(() => import("@pages/Onboarding"));
 const PageNotFound = lazy(() => import("@pages/PageNotFound"));
 
 export default function App() {
@@ -19,7 +25,7 @@ export default function App() {
   }
 
   return (
-    <Suspense fallback={<></>}>
+    <Suspense fallback={<h3>Loading...</h3>}>
       <Routes>
         <Route
           index
@@ -32,6 +38,7 @@ export default function App() {
         />
         <Route path={ROUTE_HOME} element={<Landing />} />
         <Route path={ROUTE_REGISTER} element={<Register />} />
+        <Route path={ROUTE_ONBOARDING} element={<Onboarding />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </Suspense>

@@ -1,6 +1,10 @@
 import { auth, db, googleProvider } from "@/firebase";
 import { AlertType, handleFirebaseError, showAlert } from "@/utils";
-import { DB_COLLECTION_USERS, ROUTE_CHAT } from "@/utils/constants";
+import {
+  DB_COLLECTION_USERS,
+  ROUTE_CHAT,
+  ROUTE_ONBOARDING,
+} from "@/utils/constants";
 import { createUserDocs } from "@/utils/firebaseFns";
 import GoogleLogo from "@components/GoogleLogo";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
@@ -22,7 +26,7 @@ export default function Login() {
               showAlert("Creating your Firechat account…", AlertType.info);
               const { displayName, email, uid } = res.user;
               createUserDocs({ uid, displayName, email });
-              navigate(ROUTE_CHAT);
+              navigate(ROUTE_ONBOARDING);
             }
           })
           .catch((error) => {
@@ -61,7 +65,7 @@ export default function Login() {
             </label>
             <input
               type="text"
-              placeholder="e.g. sharmaamit@elite.club"
+              placeholder="e.g. alberteinstein@elite.club"
               autoComplete="email"
               className="input-bordered input w-full max-w-xs"
               required

@@ -1,6 +1,6 @@
 import { auth, googleProvider } from "@/firebase";
 import { AlertType, handleFirebaseError, showAlert } from "@/utils";
-import { ROUTE_CHAT, ROUTE_HOME } from "@/utils/constants";
+import { ROUTE_CHAT, ROUTE_HOME, ROUTE_ONBOARDING } from "@/utils/constants";
 import { createUserDocs } from "@/utils/firebaseFns";
 import FirechatLogo from "@components/FirechatLogo";
 import GoogleLogo from "@components/GoogleLogo";
@@ -26,7 +26,7 @@ export default function Register() {
         showAlert("Creating your Firechat account…", AlertType.info);
         const { displayName, email, uid } = res.user;
         createUserDocs({ uid, displayName, email });
-        navigate(ROUTE_CHAT);
+        navigate(ROUTE_ONBOARDING);
         setLoading(false);
       })
       .catch((error) => {
@@ -50,7 +50,7 @@ export default function Register() {
       const { uid } = res.user;
       createUserDocs({ uid, displayName, email });
       await signInWithEmailAndPassword(auth, email, password);
-      navigate(ROUTE_CHAT);
+      navigate(ROUTE_ONBOARDING);
       setLoading(false);
     } catch (error: any) {
       handleFirebaseError(error);
@@ -79,7 +79,7 @@ export default function Register() {
               </label>
               <input
                 type="text"
-                placeholder="e.g. Amit Sharma"
+                placeholder="e.g. Albert Einstein"
                 autoComplete="name"
                 className="input-bordered input w-full max-w-xs"
                 required
@@ -91,7 +91,7 @@ export default function Register() {
               </label>
               <input
                 type="text"
-                placeholder="e.g. sharmaamit@elite.club"
+                placeholder="e.g. alberteinstein@elite.club"
                 autoComplete="email"
                 className="input-bordered input w-full max-w-xs"
                 required

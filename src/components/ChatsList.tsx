@@ -63,7 +63,7 @@ export default function ChatsList() {
                 {chat[1].lastMessage?.senderId === currentUser.uid && (
                   <CheckIcon className="h-4 w-4 stroke-info stroke-[3]" />
                 )}
-                <div className="text-neutral-content">
+                <div className="text-secondary text-ellipsis line-clamp-1">
                   {chat[1].lastMessage?.text}
                 </div>
               </div>

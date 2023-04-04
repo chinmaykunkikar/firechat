@@ -10,16 +10,29 @@ import { Slide, ToastContainer } from "react-toastify";
 export default function Landing() {
   const navigate = useNavigate();
 
-  const { VITE_DEMO_USER_EMAIL, VITE_DEMO_USER_PASSWORD } = import.meta.env;
+  const {
+    VITE_USER1_EMAIL,
+    VITE_USER1_PASSWORD,
+    VITE_USER2_EMAIL,
+    VITE_USER2_PASSWORD,
+    VITE_USER3_EMAIL,
+    VITE_USER3_PASSWORD,
+    VITE_USER4_EMAIL,
+    VITE_USER4_PASSWORD,
+  } = import.meta.env;
 
   async function handleDemo(e: any) {
     e.preventDefault();
+    const items = [
+      [VITE_USER1_EMAIL, VITE_USER1_PASSWORD],
+      [VITE_USER2_EMAIL, VITE_USER2_PASSWORD],
+      [VITE_USER3_EMAIL, VITE_USER3_PASSWORD],
+      [VITE_USER4_EMAIL, VITE_USER4_PASSWORD],
+    ];
+    const randomUser = items[Math.floor(Math.random() * items.length)];
+
     try {
-      await signInWithEmailAndPassword(
-        auth,
-        VITE_DEMO_USER_EMAIL,
-        VITE_DEMO_USER_PASSWORD
-      );
+      await signInWithEmailAndPassword(auth, randomUser[0], randomUser[1]);
       navigate(ROUTE_CHAT);
     } catch (error: any) {
       let errorMessage = error.message;

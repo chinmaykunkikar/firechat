@@ -86,27 +86,27 @@ export function getJoiningDate(utcDate: Date) {
 }
 
 export function generateAvatar() {
-  const generateDiceBearAvataaars = (seed: any) =>
-    `https://avatars.dicebear.com/api/avataaars/${seed}.svg`;
+  const generateDiceBearFirst = (seed: any) =>
+    `https://api.dicebear.com/6.x/big-ears/svg?seed=${seed}`;
 
-  const generateDiceBearBottts = (seed: any) =>
-    `https://avatars.dicebear.com/api/bottts/${seed}.svg`;
+  const generateDiceBearSecond = (seed: any) =>
+    `https://api.dicebear.com/6.x/bottts/svg?seed=${seed}`;
 
-  const generateDiceBearGridy = (seed: any) =>
-    `https://avatars.dicebear.com/api/gridy/${seed}.svg`;
+  const generateDiceBearThird = (seed: any) =>
+    `https://api.dicebear.com/6.x/fun-emoji/svg?seed=${seed}`;
 
   const data = [];
 
   for (let i = 0; i < 2; i++) {
-    const res = generateDiceBearAvataaars(Math.random());
+    const res = generateDiceBearFirst(Math.random());
     data.push(res);
   }
   for (let i = 0; i < 2; i++) {
-    const res = generateDiceBearBottts(Math.random());
+    const res = generateDiceBearSecond(Math.random());
     data.push(res);
   }
   for (let i = 0; i < 2; i++) {
-    const res = generateDiceBearGridy(Math.random());
+    const res = generateDiceBearThird(Math.random());
     data.push(res);
   }
   return data;
